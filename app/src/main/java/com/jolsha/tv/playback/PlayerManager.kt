@@ -62,7 +62,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  * - Leak-safe lifecycle management.
  */
 @OptIn(UnstableApi::class)
-class PlayerManager(context: Context) {
+class PlayerManager(private val context: Context) {
 
     private val appContext: Context = context.applicationContext
 
@@ -110,6 +110,76 @@ class PlayerManager(context: Context) {
     val isBuffering: Boolean
         get() = exoPlayer?.playbackState == Player.STATE_BUFFERING
 
+    /**
+     * Internal [Player.Listener] declared BEFORE initializePlayer to prevent Kotlin
+     * initialization-order null dereferences on player construction.
+     */
+    private inner class ComponentPlayerListener : Player.Listener {
+
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            val stateName = when (playbackState) {
+                Player.STATE_IDLE -> "IDLE"
+                Player.STATE_BUFFERING -> "BUFFERING"
+                Player.STATE_READY -> "READY"
+                Player.STATE_ENDED -> "ENDED"
+                else -> "UNKNOWN($playbackState)"
+            }
+            Log.d(TAG, "ExoPlayer onPlaybackStateChanged: $stateName (Channel ID: ${currentChannel?.id})")
+
+            when (playbackState) {
+                Player.STATE_IDLE -> {
+                    notifyPlaybackStateChanged(PlaybackState.Idle)
+                }
+                Player.STATE_BUFFERING -> {
+                    notifyPlaybackStateChanged(PlaybackState.Buffering)
+                }
+                Player.STATE_READY -> {
+                    // Reset retry counter on successful stream readiness
+                    retryCount = 0
+                    cancelRetry()
+
+                    val p = exoPlayer
+                    val duration = p?.duration ?: C.TIME_UNSET
+                    val isLive = p?.isCurrentMediaItemLive == true ||
+                        p?.isCurrentMediaItemDynamic == true ||
+                        duration == C.TIME_UNSET
+                    val durationMs = if (duration != C.TIME_UNSET) duration else 0L
+
+                    notifyPlaybackStateChanged(
+                        PlaybackState.Ready(
+                            durationMs = durationMs,
+                            isLive = isLive
+                        )
+                    )
+                }
+                Player.STATE_ENDED -> {
+                    notifyPlaybackStateChanged(PlaybackState.Ended)
+                }
+            }
+        }
+
+        override fun onVideoSizeChanged(videoSize: VideoSize) {
+            Log.d(TAG, "ExoPlayer onVideoSizeChanged: ${videoSize.width}x${videoSize.height}")
+            currentVideoWidth = videoSize.width
+            currentVideoHeight = videoSize.height
+            notifyVideoSizeChanged(videoSize.width, videoSize.height)
+
+            // Re-apply aspect ratio to ensure desired framing is preserved
+            currentPlayerView?.let { setAspectRatio(currentAspectRatio, it) }
+        }
+
+        override fun onTracksChanged(tracks: Tracks) {
+            Log.d(TAG, "ExoPlayer onTracksChanged: groups=${tracks.groups.size}")
+            notifyAudioTracksChanged(getAvailableAudioTracks())
+        }
+
+        override fun onPlayerError(error: PlaybackException) {
+            handlePlaybackError(error)
+        }
+    }
+
+    private val playerEventListener: Player.Listener = ComponentPlayerListener()
+
     init {
         initializePlayer()
     }
@@ -122,8 +192,8 @@ class PlayerManager(context: Context) {
         if (existing != null) return existing
 
         try {
-            // 1. RenderersFactory with decoder fallback
-            val renderersFactory = DefaultRenderersFactory(appContext)
+            // 1. RenderersFactory with decoder fallback using Activity context for DisplayManager
+            val renderersFactory = DefaultRenderersFactory(context)
                 .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF)
                 .setEnableDecoderFallback(true)
 
@@ -136,11 +206,17 @@ class PlayerManager(context: Context) {
                 .setConnectTimeoutMs(CONNECT_TIMEOUT_MS)
                 .setReadTimeoutMs(READ_TIMEOUT_MS)
                 .setAllowCrossProtocolRedirects(true)
+                .setKeepPostFor302Redirects(true)
 
-            val dataSourceFactory = DefaultDataSource.Factory(appContext, httpDataSourceFactory)
+            val dataSourceFactory = DefaultDataSource.Factory(context, httpDataSourceFactory)
 
-            // 4. Default safe Extractors for all formats (MPEG-TS, HLS, MP4, MKV)
+            // 4. Default safe Extractors for all formats with non-IDR keyframe tolerance for IPTV TS streams
             val extractorsFactory = DefaultExtractorsFactory()
+                .setConstantBitrateSeekingEnabled(true)
+                .setTsExtractorFlags(
+                    DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES or
+                        DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS
+                )
             val mediaSourceFactory = DefaultMediaSourceFactory(dataSourceFactory, extractorsFactory)
 
             // 5. Audio attributes with automatic AudioFocus management
@@ -150,7 +226,7 @@ class PlayerManager(context: Context) {
                 .build()
 
             // 6. Build the ExoPlayer instance
-            val newPlayer = ExoPlayer.Builder(appContext, renderersFactory)
+            val newPlayer = ExoPlayer.Builder(context, renderersFactory)
                 .setLoadControl(loadControl)
                 .setMediaSourceFactory(mediaSourceFactory)
                 .setAudioAttributes(audioAttributes, /* handleAudioFocus = */ true)
@@ -163,13 +239,22 @@ class PlayerManager(context: Context) {
                 newPlayer.volume = 0f
             }
 
+            Log.i(TAG, "ExoPlayer initialized successfully with TV optimizations")
             return newPlayer
         } catch (e: Throwable) {
-            Log.e(TAG, "Fatal error initializing ExoPlayer, falling back to minimal player", e)
-            val fallbackPlayer = ExoPlayer.Builder(appContext).build()
-            fallbackPlayer.addListener(playerEventListener)
-            exoPlayer = fallbackPlayer
-            return fallbackPlayer
+            val cause = StreamSanitizer.formatExceptionCauseChain(e)
+            Log.e(TAG, "Failed to initialize optimized ExoPlayer; trying minimal fallback. Cause: $cause", e)
+            try {
+                val fallbackPlayer = ExoPlayer.Builder(context).build()
+                fallbackPlayer.addListener(playerEventListener)
+                exoPlayer = fallbackPlayer
+                Log.w(TAG, "Fallback minimal ExoPlayer initialized successfully")
+                return fallbackPlayer
+            } catch (fallbackError: Throwable) {
+                val fallbackCause = StreamSanitizer.formatExceptionCauseChain(fallbackError)
+                Log.e(TAG, "Fatal: Minimal ExoPlayer fallback also failed. Cause: $fallbackCause", fallbackError)
+                throw IllegalStateException("ExoPlayer initialization failed: ${e.message ?: fallbackError.message}", e)
+            }
         }
     }
 
@@ -186,10 +271,24 @@ class PlayerManager(context: Context) {
      * @param channel The TV channel to play.
      */
     fun playChannel(channel: Channel) {
+        val sanitized = StreamSanitizer.sanitizeUrl(channel.streamUrl)
+        Log.i(TAG, "playChannel request: ID='${channel.id}', Name='${channel.displayName}', Stream='$sanitized'")
+
         try {
             cancelRetry()
             retryCount = 0
             currentChannel = channel
+
+            if (channel.streamUrl.isBlank()) {
+                val err = PlaybackState.Error(
+                    message = "Stream URL is missing for channel: ${channel.displayName}",
+                    isRecoverable = false,
+                    retryCount = 0
+                )
+                notifyPlayerError(err)
+                notifyPlaybackStateChanged(err)
+                return
+            }
 
             val activePlayer = exoPlayer ?: initializePlayer()
 
@@ -208,7 +307,8 @@ class PlayerManager(context: Context) {
             val targetRatio = channel.customAspectRatio ?: currentAspectRatio
             currentPlayerView?.let { setAspectRatio(targetRatio, it) }
         } catch (e: Throwable) {
-            Log.e(TAG, "Failed to play channel: ${channel.name}", e)
+            val causeChain = StreamSanitizer.formatExceptionCauseChain(e)
+            Log.e(TAG, "Failed to play channel: ${channel.name}, Cause: $causeChain", e)
             val err = PlaybackState.Error(
                 message = "Unable to play stream: ${e.message ?: "Unknown error"}",
                 isRecoverable = true,
@@ -225,6 +325,9 @@ class PlayerManager(context: Context) {
      */
     private fun buildMediaItem(channel: Channel): MediaItem {
         val rawUrl = channel.streamUrl.trim()
+        if (rawUrl.isBlank()) {
+            throw IllegalArgumentException("Stream URL is empty for channel: ${channel.displayName}")
+        }
         val streamUrl = if (rawUrl.contains(' ')) rawUrl.replace(" ", "%20") else rawUrl
         val uri = Uri.parse(streamUrl)
         val builder = MediaItem.Builder()
@@ -618,7 +721,15 @@ class PlayerManager(context: Context) {
      * emits a clean, user-friendly error message.
      */
     private fun handlePlaybackError(error: PlaybackException) {
-        Log.w(TAG, "Playback error occurred: ${error.errorCodeName} (${error.errorCode})", error)
+        val sanitized = StreamSanitizer.sanitizeUrl(currentChannel?.streamUrl)
+        val cause = StreamSanitizer.formatExceptionCauseChain(error)
+        Log.w(
+            TAG,
+            "Playback error: ${error.errorCodeName} (code=${error.errorCode}), " +
+                "Channel='${currentChannel?.displayName}' (ID=${currentChannel?.id}), " +
+                "Stream='$sanitized', Cause=$cause",
+            error
+        )
 
         // If the TV device has completely lost network connectivity, report clean error immediately
         if (!isNetworkConnected()) {
@@ -649,6 +760,7 @@ class PlayerManager(context: Context) {
                 delay(delayMs)
                 if (isActive) {
                     retryCount = nextAttempt
+                    Log.i(TAG, "Executing retry attempt $nextAttempt for '${currentChannel?.displayName}'")
                     val activePlayer = exoPlayer ?: initializePlayer()
                     activePlayer.prepare()
                     activePlayer.play()
@@ -656,8 +768,20 @@ class PlayerManager(context: Context) {
             }
         } else {
             // Retries exhausted (stream down or server offline)
+            val friendlyMsg = when (error.errorCode) {
+                PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED,
+                PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT ->
+                    CLEAN_OFFLINE_ERROR
+                PlaybackException.ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED,
+                PlaybackException.ERROR_CODE_PARSING_CONTAINER_MALFORMED ->
+                    "Unsupported stream format or corrupted stream."
+                PlaybackException.ERROR_CODE_IO_BAD_HTTP_STATUS ->
+                    "Server error or stream removed (HTTP error)."
+                else ->
+                    "Stream unavailable (${error.errorCodeName})."
+            }
             val fatalError = PlaybackState.Error(
-                message = CLEAN_OFFLINE_ERROR,
+                message = friendlyMsg,
                 isRecoverable = false,
                 retryCount = MAX_RETRIES
             )
@@ -671,68 +795,11 @@ class PlayerManager(context: Context) {
         retryJob = null
     }
 
-    // =========================================================================
-    // ExoPlayer Listener Implementation
-    // =========================================================================
-
-    private val playerEventListener = object : Player.Listener {
-
-        override fun onPlaybackStateChanged(playbackState: Int) {
-            when (playbackState) {
-                Player.STATE_IDLE -> {
-                    notifyPlaybackStateChanged(PlaybackState.Idle)
-                }
-                Player.STATE_BUFFERING -> {
-                    notifyPlaybackStateChanged(PlaybackState.Buffering)
-                }
-                Player.STATE_READY -> {
-                    // Reset retry counter on successful stream readiness
-                    retryCount = 0
-                    cancelRetry()
-
-                    val player = exoPlayer
-                    val duration = player?.duration ?: C.TIME_UNSET
-                    val isLive = player?.isCurrentMediaItemLive == true ||
-                        player?.isCurrentMediaItemDynamic == true ||
-                        duration == C.TIME_UNSET
-                    val durationMs = if (duration != C.TIME_UNSET) duration else 0L
-
-                    notifyPlaybackStateChanged(
-                        PlaybackState.Ready(
-                            durationMs = durationMs,
-                            isLive = isLive
-                        )
-                    )
-                }
-                Player.STATE_ENDED -> {
-                    notifyPlaybackStateChanged(PlaybackState.Ended)
-                }
-            }
-        }
-
-        override fun onVideoSizeChanged(videoSize: VideoSize) {
-            currentVideoWidth = videoSize.width
-            currentVideoHeight = videoSize.height
-            notifyVideoSizeChanged(videoSize.width, videoSize.height)
-
-            // Re-apply aspect ratio to ensure desired framing is preserved
-            currentPlayerView?.let { setAspectRatio(currentAspectRatio, it) }
-        }
-
-        override fun onTracksChanged(tracks: Tracks) {
-            notifyAudioTracksChanged(getAvailableAudioTracks())
-        }
-
-        override fun onPlayerError(error: PlaybackException) {
-            handlePlaybackError(error)
-        }
-    }
-
     companion object {
         private const val TAG = "PlayerManager"
         private const val USER_AGENT = "Jolsha-IPTV/1.0 (Android TV)"
-        private const val CONNECT_TIMEOUT_MS = 10_000
-        private const val READ_TIMEOUT_MS = 10_000
+        private const val CONNECT_TIMEOUT_MS = 15_000
+        private const val READ_TIMEOUT_MS = 15_000
 
         private const val MIN_BUFFER_MS = 15_000
         private const val MAX_BUFFER_MS = 30_000

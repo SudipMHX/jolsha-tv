@@ -128,4 +128,28 @@ class PlaybackModelsTest {
         assertEquals(AspectRatio.SIXTEEN_BY_NINE, channelWithAspect.customAspectRatio)
         assertEquals("Test Channel", channelWithAspect.displayName)
     }
+
+    @Test
+    fun testStreamUrlValidationScenarios() {
+        val validChannel = Channel(
+            id = "ch_valid",
+            name = "Valid Stream",
+            streamUrl = "http://10.189.188.190:8080/7654321/1234567/156"
+        )
+        assertFalse(validChannel.streamUrl.isBlank())
+
+        val blankChannel = Channel(
+            id = "ch_blank",
+            name = "Blank Stream",
+            streamUrl = "   "
+        )
+        assertTrue(blankChannel.streamUrl.isBlank())
+    }
+
+    @Test
+    fun testPlaybackStateErrorEquality() {
+        val err1 = PlaybackState.Error("Network failure", isRecoverable = true, retryCount = 1)
+        val err2 = PlaybackState.Error("Network failure", isRecoverable = true, retryCount = 1)
+        assertEquals(err1, err2)
+    }
 }

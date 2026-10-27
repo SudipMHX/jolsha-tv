@@ -52,7 +52,12 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
             ?: playlistRepository.getChannelById(channelId)
             ?: channelList.firstOrNull()
 
-        target?.let { playChannelInternal(it) }
+        if (target != null) {
+            playChannelInternal(target)
+        } else {
+            val msg = if (channelList.isEmpty()) "No channels available in playlist" else "Channel not found"
+            _playbackState.value = PlaybackState.Error(msg, isRecoverable = false, retryCount = 0)
+        }
     }
 
     fun playChannel(channel: Channel) {

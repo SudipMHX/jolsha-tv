@@ -24,6 +24,7 @@ import com.jolsha.tv.data.model.PlaybackState
 import com.jolsha.tv.databinding.ActivityPlayerBinding
 import com.jolsha.tv.playback.PlaybackListener
 import com.jolsha.tv.playback.PlayerManager
+import com.jolsha.tv.playback.StreamSanitizer
 import com.jolsha.tv.ui.common.FocusHighlightHelper
 import com.jolsha.tv.ui.dialog.AudioTracksDialog
 import com.jolsha.tv.ui.player.adapter.QuickChannelAdapter
@@ -85,6 +86,7 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
 
             val channelId = intent.getStringExtra(EXTRA_CHANNEL_ID) ?: ""
             val categoryId = intent.getStringExtra(EXTRA_CATEGORY_ID) ?: ""
+            android.util.Log.i("PlayerActivity", "onCreate: Starting player with channelId='$channelId', categoryId='$categoryId'")
             viewModel.initPlayer(channelId, categoryId)
 
             // Apply default aspect ratio
@@ -94,9 +96,20 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
             showOsd()
             clockHandler.post(clockRunnable)
         } catch (e: Throwable) {
-            android.util.Log.e("PlayerActivity", "Fatal error during PlayerActivity.onCreate", e)
-            Toast.makeText(this, "Player Error: ${e.message ?: "Failed to initialize player"}", Toast.LENGTH_LONG).show()
-            finish()
+            val causeChain = StreamSanitizer.formatExceptionCauseChain(e)
+            android.util.Log.e("PlayerActivity", "Fatal error during PlayerActivity.onCreate: $causeChain", e)
+            if (::binding.isInitialized) {
+                binding.playerBufferingView.visibility = View.GONE
+                binding.playerErrorView.visibility = View.VISIBLE
+                binding.textErrorMessage.text = "Player Error: ${e.message ?: "Failed to initialize player"}"
+                binding.buttonRetry.setOnClickListener {
+                    recreate()
+                }
+                binding.buttonRetry.requestFocus()
+            } else {
+                Toast.makeText(this, "Player Error: ${e.message ?: "Failed to initialize player"}", Toast.LENGTH_LONG).show()
+                finish()
+            }
         }
     }
 
@@ -222,11 +235,14 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
 
     private fun switchChannel(channel: Channel) {
         try {
+            val sanitized = StreamSanitizer.sanitizeUrl(channel.streamUrl)
+            android.util.Log.i("PlayerActivity", "switchChannel: Channel='${channel.displayName}' (ID=${channel.id}), Stream='$sanitized'")
             binding.playerErrorView.visibility = View.GONE
             playerManager.playChannel(channel)
             showOsd()
         } catch (e: Exception) {
-            android.util.Log.e("PlayerActivity", "Error switching channel", e)
+            val causeChain = StreamSanitizer.formatExceptionCauseChain(e)
+            android.util.Log.e("PlayerActivity", "Error switching channel: $causeChain", e)
         }
     }
 
@@ -402,6 +418,7 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
 
     override fun onPlayerError(error: PlaybackState.Error) {
         runOnUiThread {
+            android.util.Log.w("PlayerActivity", "onPlayerError: ${error.message} (recoverable=${error.isRecoverable}, retry=${error.retryCount})")
             binding.playerBufferingView.visibility = View.GONE
             binding.playerErrorView.visibility = View.VISIBLE
             binding.textErrorMessage.text = error.message
