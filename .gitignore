@@ -79,11 +79,12 @@ $RECYCLE.BIN/
 .directory
 
 # =========================================================================
-# Signing & Keystores (Preserve Project Release Keystore)
+# Signing & Keystores (Security: Never Commit Private Keys to Public Git)
 # =========================================================================
 *.keystore
+*.jks
 *.key
 *.p12
 *.pem
-!keystore/release.jks
-!keystore.properties
+keystore/
+keystore.properties

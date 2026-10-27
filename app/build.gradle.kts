@@ -30,15 +30,17 @@ android {
 
     signingConfigs {
         create("release") {
-            val storeFilePath = keystoreProperties.getProperty("RELEASE_STORE_FILE") ?: "../keystore/release.jks"
-            val storeFileObj = file(storeFilePath)
-            if (storeFileObj.exists()) {
-                storeFile = storeFileObj
-                storePassword = keystoreProperties.getProperty("RELEASE_STORE_PASSWORD") ?: "jolsha123456"
-                keyAlias = keystoreProperties.getProperty("RELEASE_KEY_ALIAS") ?: "jolsha"
-                keyPassword = keystoreProperties.getProperty("RELEASE_KEY_PASSWORD") ?: "jolsha123456"
-                enableV1Signing = true
-                enableV2Signing = true
+            val storeFilePath = keystoreProperties.getProperty("RELEASE_STORE_FILE")
+            if (!storeFilePath.isNullOrBlank()) {
+                val storeFileObj = file(storeFilePath)
+                if (storeFileObj.exists()) {
+                    storeFile = storeFileObj
+                    storePassword = keystoreProperties.getProperty("RELEASE_STORE_PASSWORD")
+                    keyAlias = keystoreProperties.getProperty("RELEASE_KEY_ALIAS")
+                    keyPassword = keystoreProperties.getProperty("RELEASE_KEY_PASSWORD")
+                    enableV1Signing = true
+                    enableV2Signing = true
+                }
             }
         }
     }
@@ -50,7 +52,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            val releaseSigning = signingConfigs.findByName("release")
+            if (releaseSigning?.storeFile?.exists() == true) {
+                signingConfig = releaseSigning
+            }
         }
         debug {
             applicationIdSuffix = ".debug"
