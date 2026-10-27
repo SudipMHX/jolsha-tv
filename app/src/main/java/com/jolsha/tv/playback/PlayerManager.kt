@@ -121,61 +121,56 @@ class PlayerManager(context: Context) {
         val existing = exoPlayer
         if (existing != null) return existing
 
-        // 1. RenderersFactory with decoder fallback
-        val renderersFactory = DefaultRenderersFactory(appContext)
-            .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF)
-            .setEnableDecoderFallback(true)
+        try {
+            // 1. RenderersFactory with decoder fallback
+            val renderersFactory = DefaultRenderersFactory(appContext)
+                .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF)
+                .setEnableDecoderFallback(true)
 
-        // 2. Low-latency TV buffer tuning
-        val loadControl = DefaultLoadControl.Builder()
-            .setBufferDurationsMs(
-                MIN_BUFFER_MS,
-                MAX_BUFFER_MS,
-                BUFFER_FOR_PLAYBACK_MS,
-                BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS
-            )
-            .setPrioritizeTimeOverSizeThresholds(true)
-            .build()
+            // 2. Standard safe LoadControl
+            val loadControl = DefaultLoadControl.Builder().build()
 
-        // 3. Custom HTTP Data Source with custom User-Agent, timeouts, and cross-protocol redirects
-        val httpDataSourceFactory = DefaultHttpDataSource.Factory()
-            .setUserAgent(USER_AGENT)
-            .setConnectTimeoutMs(CONNECT_TIMEOUT_MS)
-            .setReadTimeoutMs(READ_TIMEOUT_MS)
-            .setAllowCrossProtocolRedirects(true)
+            // 3. Custom HTTP Data Source with custom User-Agent, timeouts, and cross-protocol redirects
+            val httpDataSourceFactory = DefaultHttpDataSource.Factory()
+                .setUserAgent(USER_AGENT)
+                .setConnectTimeoutMs(CONNECT_TIMEOUT_MS)
+                .setReadTimeoutMs(READ_TIMEOUT_MS)
+                .setAllowCrossProtocolRedirects(true)
 
-        val dataSourceFactory = DefaultDataSource.Factory(appContext, httpDataSourceFactory)
+            val dataSourceFactory = DefaultDataSource.Factory(appContext, httpDataSourceFactory)
 
-        // 4. Extractors tuned for MPEG-TS synchronization and progressive HTTP streams
-        val extractorsFactory = DefaultExtractorsFactory()
-            .setTsExtractorFlags(
-                DefaultTsPayloadReaderFactory.FLAG_ALLOW_NON_IDR_KEYFRAMES or
-                    DefaultTsPayloadReaderFactory.FLAG_DETECT_ACCESS_UNITS
-            )
+            // 4. Default safe Extractors for all formats (MPEG-TS, HLS, MP4, MKV)
+            val extractorsFactory = DefaultExtractorsFactory()
+            val mediaSourceFactory = DefaultMediaSourceFactory(dataSourceFactory, extractorsFactory)
 
-        val mediaSourceFactory = DefaultMediaSourceFactory(dataSourceFactory, extractorsFactory)
+            // 5. Audio attributes with automatic AudioFocus management
+            val audioAttributes = AudioAttributes.Builder()
+                .setUsage(C.USAGE_MEDIA)
+                .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
+                .build()
 
-        // 5. Audio attributes with automatic AudioFocus management
-        val audioAttributes = AudioAttributes.Builder()
-            .setUsage(C.USAGE_MEDIA)
-            .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
-            .build()
+            // 6. Build the ExoPlayer instance
+            val newPlayer = ExoPlayer.Builder(appContext, renderersFactory)
+                .setLoadControl(loadControl)
+                .setMediaSourceFactory(mediaSourceFactory)
+                .setAudioAttributes(audioAttributes, /* handleAudioFocus = */ true)
+                .build()
 
-        // 6. Build the ExoPlayer instance
-        val newPlayer = ExoPlayer.Builder(appContext, renderersFactory)
-            .setLoadControl(loadControl)
-            .setMediaSourceFactory(mediaSourceFactory)
-            .setAudioAttributes(audioAttributes, /* handleAudioFocus = */ true)
-            .build()
+            newPlayer.addListener(playerEventListener)
+            exoPlayer = newPlayer
 
-        newPlayer.addListener(playerEventListener)
-        exoPlayer = newPlayer
+            if (isMuted) {
+                newPlayer.volume = 0f
+            }
 
-        if (isMuted) {
-            newPlayer.volume = 0f
+            return newPlayer
+        } catch (e: Throwable) {
+            Log.e(TAG, "Fatal error initializing ExoPlayer, falling back to minimal player", e)
+            val fallbackPlayer = ExoPlayer.Builder(appContext).build()
+            fallbackPlayer.addListener(playerEventListener)
+            exoPlayer = fallbackPlayer
+            return fallbackPlayer
         }
-
-        return newPlayer
     }
 
     // =========================================================================
@@ -212,7 +207,7 @@ class PlayerManager(context: Context) {
             // Apply channel's custom aspect ratio if configured, otherwise retain current ratio
             val targetRatio = channel.customAspectRatio ?: currentAspectRatio
             currentPlayerView?.let { setAspectRatio(targetRatio, it) }
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             Log.e(TAG, "Failed to play channel: ${channel.name}", e)
             val err = PlaybackState.Error(
                 message = "Unable to play stream: ${e.message ?: "Unknown error"}",
@@ -275,37 +270,41 @@ class PlayerManager(context: Context) {
      * @param playerView The [PlayerView] to apply the ratio to.
      */
     fun setAspectRatio(ratio: AspectRatio, playerView: PlayerView) {
-        currentAspectRatio = ratio
-        val contentFrame = playerView.findViewById<AspectRatioFrameLayout>(
-            androidx.media3.ui.R.id.exo_content_frame
-        )
+        try {
+            currentAspectRatio = ratio
+            val contentFrame = playerView.findViewById<AspectRatioFrameLayout>(
+                androidx.media3.ui.R.id.exo_content_frame
+            )
 
-        when (ratio) {
-            AspectRatio.FIT -> {
-                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-                val videoRatio = if (currentVideoHeight > 0) {
-                    currentVideoWidth.toFloat() / currentVideoHeight.toFloat()
-                } else {
-                    0f
+            when (ratio) {
+                AspectRatio.FIT -> {
+                    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                    val videoRatio = if (currentVideoHeight > 0) {
+                        currentVideoWidth.toFloat() / currentVideoHeight.toFloat()
+                    } else {
+                        0f
+                    }
+                    if (videoRatio > 0f) {
+                        contentFrame?.setAspectRatio(videoRatio)
+                    }
                 }
-                if (videoRatio > 0f) {
-                    contentFrame?.setAspectRatio(videoRatio)
+                AspectRatio.FILL -> {
+                    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+                }
+                AspectRatio.ZOOM -> {
+                    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+                }
+                AspectRatio.SIXTEEN_BY_NINE -> {
+                    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                    contentFrame?.setAspectRatio(16f / 9f)
+                }
+                AspectRatio.FOUR_BY_THREE -> {
+                    playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                    contentFrame?.setAspectRatio(4f / 3f)
                 }
             }
-            AspectRatio.FILL -> {
-                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
-            }
-            AspectRatio.ZOOM -> {
-                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-            }
-            AspectRatio.SIXTEEN_BY_NINE -> {
-                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-                contentFrame?.setAspectRatio(16f / 9f)
-            }
-            AspectRatio.FOUR_BY_THREE -> {
-                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
-                contentFrame?.setAspectRatio(4f / 3f)
-            }
+        } catch (e: Throwable) {
+            Log.e(TAG, "Error setting aspect ratio", e)
         }
     }
 
@@ -454,13 +453,17 @@ class PlayerManager(context: Context) {
      * @param playerView The [PlayerView] surface to attach.
      */
     fun attachPlayerView(playerView: PlayerView) {
-        if (currentPlayerView == playerView) return
-        detachPlayerView()
-        currentPlayerView = playerView
-        val activePlayer = exoPlayer ?: initializePlayer()
-        playerView.player = activePlayer
-        playerView.useController = false
-        setAspectRatio(currentAspectRatio, playerView)
+        try {
+            if (currentPlayerView == playerView) return
+            detachPlayerView()
+            currentPlayerView = playerView
+            val activePlayer = exoPlayer ?: initializePlayer()
+            playerView.player = activePlayer
+            playerView.useController = false
+            setAspectRatio(currentAspectRatio, playerView)
+        } catch (e: Throwable) {
+            Log.e(TAG, "Error attaching PlayerView", e)
+        }
     }
 
     /**

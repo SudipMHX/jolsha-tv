@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Jolsha</string>
-    <string name="app_tagline">Fast &amp; Crisp Android TV IPTV Player</string>
+    <string name="app_tagline">Fast &amp; Crisp Android TV Player</string>
 
     <!-- Categories -->
     <string name="category_all">All Channels</string>
@@ -53,14 +53,14 @@
     <string name="settings_clear_history_desc">Remove all channels from Recently Watched</string>
     <string name="settings_reset_favorites">Reset Favorites</string>
     <string name="settings_reset_favorites_desc">Clear all starred favorite channels</string>
-    <string name="settings_about">About Jolsha</string>
-    <string name="settings_about_desc">Version 1.0.0 • Clean, native Android TV player</string>
+    <string name="settings_about">About Jolsha TV</string>
+    <string name="settings_about_desc">Jolsha TV • Version 1.0.0</string>
 
     <!-- Developer Info -->
     <string name="settings_developer">Developer</string>
     <string name="settings_developer_desc">Mahatab Hossen Sudip • Full Stack Developer</string>
-    <string name="developer_dialog_title">Developer Information</string>
-    <string name="developer_dialog_message">Lead Developer:\nMahatab Hossen Sudip\nFull Stack Developer\n\nAI Assistant:\nClaude\n\nContact Address:\nsudipmhx@gmail.com\n\nApp: Jolsha Android TV IPTV</string>
+    <string name="developer_dialog_title">Jolsha TV</string>
+    <string name="developer_dialog_message">Jolsha TV\n\nLead Developer:\nMahatab Hossen Sudip\nFull Stack Developer\n\nAI Assistant:\nClaude\n\nContact Address:\nsudipmhx@gmail.com</string>
 
     <!-- Player Messages -->
     <string name="playback_buffering">Connecting to stream…</string>

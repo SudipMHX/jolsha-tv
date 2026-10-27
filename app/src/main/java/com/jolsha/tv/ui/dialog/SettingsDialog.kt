@@ -102,8 +102,8 @@ class SettingsDialog(
         // 8. About Jolsha
         binding.rowAbout.setOnClickListener {
             AlertDialog.Builder(context, R.style.Theme_Jolsha_TV_Dialog)
-                .setTitle("Jolsha for Android TV")
-                .setMessage("Version 1.0.0\n\nA modern, cinematic, high-performance IPTV player crafted exclusively for Android TV screens with full remote control navigation.\n\n© 2026 Jolsha TV")
+                .setTitle("Jolsha TV")
+                .setMessage("Jolsha TV\nVersion 1.0.0\n\nCrafted for Android TV screens with full remote control navigation.\n\n© 2026 Jolsha TV")
                 .setPositiveButton("OK", null)
                 .show()
         }

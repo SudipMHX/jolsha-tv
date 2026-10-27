@@ -70,28 +70,34 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[PlayerViewModel::class.java]
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        try {
+            viewModel = ViewModelProvider(this)[PlayerViewModel::class.java]
+            binding = ActivityPlayerBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-        playerManager = PlayerManager(this)
-        playerManager.listener = this
-        playerManager.attachPlayerView(binding.playerView)
+            playerManager = PlayerManager(this)
+            playerManager.listener = this
+            playerManager.attachPlayerView(binding.playerView)
 
-        setupQuickChannelGuide()
-        setupHudControls()
-        observeViewModel()
+            setupQuickChannelGuide()
+            setupHudControls()
+            observeViewModel()
 
-        val channelId = intent.getStringExtra(EXTRA_CHANNEL_ID) ?: ""
-        val categoryId = intent.getStringExtra(EXTRA_CATEGORY_ID) ?: ""
-        viewModel.initPlayer(channelId, categoryId)
+            val channelId = intent.getStringExtra(EXTRA_CHANNEL_ID) ?: ""
+            val categoryId = intent.getStringExtra(EXTRA_CATEGORY_ID) ?: ""
+            viewModel.initPlayer(channelId, categoryId)
 
-        // Apply default aspect ratio
-        val defaultAspect = viewModel.aspectRatio.value
-        playerManager.setAspectRatio(defaultAspect)
+            // Apply default aspect ratio
+            val defaultAspect = viewModel.aspectRatio.value
+            playerManager.setAspectRatio(defaultAspect)
 
-        showOsd()
-        clockHandler.post(clockRunnable)
+            showOsd()
+            clockHandler.post(clockRunnable)
+        } catch (e: Throwable) {
+            android.util.Log.e("PlayerActivity", "Fatal error during PlayerActivity.onCreate", e)
+            Toast.makeText(this, "Player Error: ${e.message ?: "Failed to initialize player"}", Toast.LENGTH_LONG).show()
+            finish()
+        }
     }
 
     private fun setupHudControls() {
@@ -225,31 +231,35 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
     }
 
     private fun updateChannelMetadata(channel: Channel) {
-        val numStr = if (channel.formattedNumber.isNotBlank()) "#${channel.formattedNumber}" else ""
-        binding.textTopChannelNumber.text = numStr
-        binding.textTopChannelName.text = channel.displayName
+        try {
+            val numStr = if (channel.formattedNumber.isNotBlank()) "#${channel.formattedNumber}" else ""
+            binding.textTopChannelNumber.text = numStr
+            binding.textTopChannelName.text = channel.displayName
 
-        binding.textHudChannelNumber.text = numStr
-        binding.textHudChannelName.text = channel.displayName
-        binding.textHudCategory.text = channel.category.uppercase()
+            binding.textHudChannelNumber.text = numStr
+            binding.textHudChannelName.text = channel.displayName
+            binding.textHudCategory.text = channel.category.uppercase()
 
-        val logoUrl = channel.logoUrl.trim()
-        if (logoUrl.isNotBlank()) {
-            binding.textHudLogoFallback.visibility = View.GONE
-            binding.imageHudLogo.visibility = View.VISIBLE
-            binding.imageHudLogo.load(logoUrl) {
-                crossfade(true)
-                transformations(RoundedCornersTransformation(8f))
-                listener(
-                    onError = { _, _ -> showHudFallbackMonogram(channel) },
-                    onSuccess = { _, _ ->
-                        binding.textHudLogoFallback.visibility = View.GONE
-                        binding.imageHudLogo.visibility = View.VISIBLE
-                    }
-                )
+            val logoUrl = channel.logoUrl.trim()
+            if (logoUrl.isNotBlank()) {
+                binding.textHudLogoFallback.visibility = View.GONE
+                binding.imageHudLogo.visibility = View.VISIBLE
+                binding.imageHudLogo.load(logoUrl) {
+                    crossfade(true)
+                    transformations(RoundedCornersTransformation(8f))
+                    listener(
+                        onError = { _, _ -> showHudFallbackMonogram(channel) },
+                        onSuccess = { _, _ ->
+                            binding.textHudLogoFallback.visibility = View.GONE
+                            binding.imageHudLogo.visibility = View.VISIBLE
+                        }
+                    )
+                }
+            } else {
+                showHudFallbackMonogram(channel)
             }
-        } else {
-            showHudFallbackMonogram(channel)
+        } catch (e: Throwable) {
+            android.util.Log.e("PlayerActivity", "Error updating metadata", e)
         }
     }
 
@@ -504,26 +514,46 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
     override fun onResume() {
         super.onResume()
         try {
-            playerManager.resume()
-        } catch (e: Exception) {
+            if (::playerManager.isInitialized) {
+                playerManager.resume()
+            }
+        } catch (e: Throwable) {
             android.util.Log.e("PlayerActivity", "Resume error", e)
         }
     }
 
     override fun onPause() {
         super.onPause()
-        playerManager.pause()
+        try {
+            if (::playerManager.isInitialized) {
+                playerManager.pause()
+            }
+        } catch (e: Throwable) {
+            android.util.Log.e("PlayerActivity", "Pause error", e)
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        playerManager.stop()
+        try {
+            if (::playerManager.isInitialized) {
+                playerManager.stop()
+            }
+        } catch (e: Throwable) {
+            android.util.Log.e("PlayerActivity", "Stop error", e)
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        osdHandler.removeCallbacks(hideOsdRunnable)
-        clockHandler.removeCallbacks(clockRunnable)
-        playerManager.release()
+        try {
+            osdHandler.removeCallbacks(hideOsdRunnable)
+            clockHandler.removeCallbacks(clockRunnable)
+            if (::playerManager.isInitialized) {
+                playerManager.release()
+            }
+        } catch (e: Throwable) {
+            android.util.Log.e("PlayerActivity", "Destroy error", e)
+        }
     }
 }

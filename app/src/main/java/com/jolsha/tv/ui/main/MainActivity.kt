@@ -1,5 +1,6 @@
 package com.jolsha.tv.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -206,12 +207,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openPlayer(channel: Channel) {
-        val intent = PlayerActivity.createIntent(
-            context = this,
-            channelId = channel.id,
-            categoryId = viewModel.selectedCategory.value.id
-        )
-        startActivity(intent)
+        try {
+            val intent = PlayerActivity.createIntent(
+                context = this,
+                channelId = channel.id,
+                categoryId = viewModel.selectedCategory.value.id
+            )
+            startActivity(intent)
+        } catch (e: Throwable) {
+            Log.e("MainActivity", "Failed to start PlayerActivity", e)
+            Toast.makeText(this, "Cannot open player: ${e.message ?: "Unknown error"}", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun observeViewModel() {
@@ -269,10 +275,27 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        checkPreviousCrash()
         // If categories or channels are present, ensure first item or last focused item has focus
         if (binding.recyclerChannels.hasFocus() || binding.recyclerCategories.hasFocus()) return
         binding.recyclerCategories.post {
             binding.recyclerCategories.layoutManager?.findViewByPosition(0)?.requestFocus()
+        }
+    }
+
+    private fun checkPreviousCrash() {
+        try {
+            val crashPrefs = getSharedPreferences("crash_log", Context.MODE_PRIVATE)
+            val lastCrash = crashPrefs.getString("last_crash", null)
+            if (!lastCrash.isNullOrBlank()) {
+                crashPrefs.edit().remove("last_crash").commit()
+                AlertDialog.Builder(this, R.style.Theme_Jolsha_TV_Dialog)
+                    .setTitle("Jolsha TV Diagnostic")
+                    .setMessage("Playback could not start on your TV hardware:\n\n${lastCrash.take(450)}")
+                    .setPositiveButton("OK", null)
+                    .show()
+            }
+        } catch (_: Exception) {
         }
     }
 
