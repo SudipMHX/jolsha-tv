@@ -32,8 +32,10 @@ android {
         create("release") {
             val storeFilePath = keystoreProperties.getProperty("RELEASE_STORE_FILE")
             if (!storeFilePath.isNullOrBlank()) {
-                val storeFileObj = file(storeFilePath)
-                if (storeFileObj.exists()) {
+                val normalizedPath = storeFilePath.removePrefix("../")
+                val storeFileObj = rootProject.file(normalizedPath).takeIf { it.exists() }
+                    ?: project.file(storeFilePath).takeIf { it.exists() }
+                if (storeFileObj != null) {
                     storeFile = storeFileObj
                     storePassword = keystoreProperties.getProperty("RELEASE_STORE_PASSWORD")
                     keyAlias = keystoreProperties.getProperty("RELEASE_KEY_ALIAS")
@@ -52,8 +54,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            val releaseSigning = signingConfigs.findByName("release")
-            if (releaseSigning?.storeFile?.exists() == true) {
+            val releaseSigning = signingConfigs.getByName("release")
+            if (releaseSigning.storeFile != null) {
                 signingConfig = releaseSigning
             }
         }
