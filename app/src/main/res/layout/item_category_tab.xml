@@ -9,6 +9,8 @@
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:nextFocusDown="@+id/recyclerChannels"
+    android:nextFocusUp="@+id/buttonSearch"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingStart="@dimen/tv_category_padding_h"

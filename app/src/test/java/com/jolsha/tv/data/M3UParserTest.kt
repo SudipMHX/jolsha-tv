@@ -342,7 +342,7 @@ class M3UParserTest {
         // System categories: All Channels, Favorites, Recently Watched
         assertEquals(Category.ID_ALL, categories[0].id)
         assertEquals("All Channels", categories[0].name)
-        assertEquals(5, categories[0].count)
+        assertEquals(4, categories[0].count)
         assertTrue(categories[0].isSystemCategory)
 
         assertEquals(Category.ID_FAVORITES, categories[1].id)
@@ -372,7 +372,7 @@ class M3UParserTest {
         assertTrue(banglaChannels.all { it.category == "BANGLA" })
 
         val allChannels = repository.getChannelsForCategory(Category.ID_ALL)
-        assertEquals(5, allChannels.size)
+        assertEquals(4, allChannels.size)
     }
 
     // =============================================================================================

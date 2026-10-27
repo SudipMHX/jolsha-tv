@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -46,13 +47,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _searchQuery
     ) { allChannels, category, query ->
         val filteredByCategory = when (category.id) {
-            Category.ID_ALL -> allChannels
-            Category.ID_FAVORITES -> allChannels.filter { it.isFavorite }
+            Category.ID_ALL -> allChannels.distinctBy { it.streamUrl.ifBlank { it.name } }
+            Category.ID_FAVORITES -> allChannels.filter { it.isFavorite }.distinctBy { it.streamUrl.ifBlank { it.name } }
             Category.ID_RECENT -> {
                 val idToChannel = allChannels.associateBy { it.id }
                 preferencesRepository.getRecentChannelIds().mapNotNull { idToChannel[it] }
+                    .distinctBy { it.streamUrl.ifBlank { it.name } }
             }
             else -> allChannels.filter { it.category.equals(category.name, ignoreCase = true) }
+                .distinctBy { it.streamUrl.ifBlank { it.name } }
         }
 
         if (query.isBlank()) {
@@ -70,8 +73,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         .flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    val totalChannelCount: StateFlow<Int> = playlistRepository.channels
-        .combine(_selectedCategory) { channels, _ -> channels.size }
+    val totalChannelCount: StateFlow<Int> = displayedChannels
+        .map { it.size }
         .flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.Lazily, 0)
 
@@ -100,6 +103,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun loadFromUri(uri: Uri) {
         viewModelScope.launch {
             playlistRepository.loadFromUri(uri)
+        }
+    }
+
+    fun loadFromFile(file: java.io.File) {
+        viewModelScope.launch {
+            playlistRepository.loadFromFile(file)
         }
     }
 

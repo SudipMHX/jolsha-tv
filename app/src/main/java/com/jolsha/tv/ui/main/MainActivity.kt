@@ -3,12 +3,15 @@ package com.jolsha.tv.ui.main
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +31,7 @@ import com.jolsha.tv.ui.main.adapter.ChannelAdapter
 import com.jolsha.tv.ui.player.PlayerActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -112,21 +116,63 @@ class MainActivity : AppCompatActivity() {
 
     private fun showSettingsDialog() {
         val dialog = SettingsDialog(this, viewModel) {
-            openDocumentLauncher.launch(arrayOf("audio/*", "video/*", "application/*", "text/*", "*/*"))
+            importM3uFile()
         }
         dialog.show()
     }
 
-    private fun setupCategoriesRecyclerView() {
-        categoryAdapter = CategoryAdapter(
-            onCategoryClick = { category ->
-                viewModel.selectCategory(category)
-            },
-            onCategoryFocus = { category ->
-                // Smooth TV UX: preview channels as user navigates through categories
-                viewModel.selectCategory(category)
+    private fun importM3uFile() {
+        try {
+            openDocumentLauncher.launch(arrayOf("*/*"))
+        } catch (e: Exception) {
+            Log.w("MainActivity", "System file picker unavailable, falling back to storage scanner", e)
+            showLocalFileScannerFallback()
+        }
+    }
+
+    private fun showLocalFileScannerFallback() {
+        val candidates = mutableListOf<File>()
+        try {
+            val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val docDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+            val rootDir = Environment.getExternalStorageDirectory()
+
+            val dirsToScan = listOfNotNull(downloadDir, docDir, rootDir)
+            for (dir in dirsToScan) {
+                if (dir.exists() && dir.isDirectory) {
+                    dir.listFiles()?.filter {
+                        it.isFile && (it.name.endsWith(".m3u", ignoreCase = true) || it.name.endsWith(".m3u8", ignoreCase = true))
+                    }?.let { candidates.addAll(it) }
+                }
             }
-        )
+        } catch (e: Exception) {
+            Log.w("MainActivity", "Error scanning storage directories", e)
+        }
+
+        if (candidates.isNotEmpty()) {
+            val items = candidates.map { "${it.name} (${it.parentFile?.name ?: "Storage"})" }.toTypedArray()
+            AlertDialog.Builder(this, R.style.Theme_Jolsha_TV_Dialog)
+                .setTitle("Select M3U Playlist")
+                .setItems(items) { _, which ->
+                    val chosenFile = candidates[which]
+                    viewModel.loadFromFile(chosenFile)
+                    Toast.makeText(this, "Loading: ${chosenFile.name}", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton(R.string.action_close, null)
+                .show()
+        } else {
+            AlertDialog.Builder(this, R.style.Theme_Jolsha_TV_Dialog)
+                .setTitle("No M3U Files Found")
+                .setMessage("Your TV does not have a system file picker installed, and no .m3u or .m3u8 files were detected in your Download or Documents folder.\n\nPlease place your playlist into your TV's 'Download' folder, or install a TV file manager like Total Commander or AnExplorer.")
+                .setPositiveButton("OK", null)
+                .show()
+        }
+    }
+
+    private fun setupCategoriesRecyclerView() {
+        categoryAdapter = CategoryAdapter { category ->
+            viewModel.selectCategory(category)
+        }
 
         binding.recyclerCategories.apply {
             adapter = categoryAdapter
@@ -205,8 +251,8 @@ class MainActivity : AppCompatActivity() {
                                 binding.emptyStateView.visibility = View.GONE
                                 binding.recyclerChannels.visibility = View.VISIBLE
 
-                                // Restore focus if needed
-                                if (viewModel.lastFocusedChannelPosition in channels.indices) {
+                                // Restore focus only if channel grid had focus
+                                if (binding.recyclerChannels.hasFocus() && viewModel.lastFocusedChannelPosition in channels.indices) {
                                     binding.recyclerChannels.post {
                                         binding.recyclerChannels.layoutManager?.findViewByPosition(
                                             viewModel.lastFocusedChannelPosition

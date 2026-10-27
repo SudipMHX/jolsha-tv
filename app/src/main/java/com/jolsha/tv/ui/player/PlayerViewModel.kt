@@ -44,7 +44,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
 
     fun initPlayer(channelId: String, categoryId: String) {
         val channelList = playlistRepository.getChannelsForCategory(categoryId).ifEmpty {
-            playlistRepository.channels.value
+            playlistRepository.channels.value.distinctBy { it.streamUrl.ifBlank { it.name } }
         }
         _channels.value = channelList
 

@@ -40,6 +40,7 @@ class SettingsDialog(
         FocusHighlightHelper.attachFocusAnimation(binding.rowDefaultAspectRatio, focusScale, elevation)
         FocusHighlightHelper.attachFocusAnimation(binding.rowClearHistory, focusScale, elevation)
         FocusHighlightHelper.attachFocusAnimation(binding.rowResetFavorites, focusScale, elevation)
+        FocusHighlightHelper.attachFocusAnimation(binding.rowDeveloper, focusScale, elevation)
         FocusHighlightHelper.attachFocusAnimation(binding.rowAbout, focusScale, elevation)
         FocusHighlightHelper.attachFocusAnimation(binding.dialogButtonClose, 1.1f, 6f)
     }
@@ -89,7 +90,16 @@ class SettingsDialog(
             Toast.makeText(context, context.getString(R.string.favorites_cleared), Toast.LENGTH_SHORT).show()
         }
 
-        // 7. About Jolsha
+        // 7. Developer Info
+        binding.rowDeveloper.setOnClickListener {
+            AlertDialog.Builder(context, R.style.Theme_Jolsha_TV_Dialog)
+                .setTitle(context.getString(R.string.developer_dialog_title))
+                .setMessage(context.getString(R.string.developer_dialog_message))
+                .setPositiveButton("OK", null)
+                .show()
+        }
+
+        // 8. About Jolsha
         binding.rowAbout.setOnClickListener {
             AlertDialog.Builder(context, R.style.Theme_Jolsha_TV_Dialog)
                 .setTitle("Jolsha for Android TV")

@@ -347,34 +347,38 @@ class PlaylistRepository(
      */
     private fun buildCategories(channelList: List<Channel>): List<Category> {
         val result = mutableListOf<Category>()
-        val totalChannels = channelList.size
+        val uniqueChannels = channelList.distinctBy { it.streamUrl.ifBlank { it.name } }
+        val uniqueTotalCount = uniqueChannels.size
+        val uniqueFavCount = uniqueChannels.count { it.isFavorite }
 
-        var favCount = 0
-        val channelIdSet = HashSet<String>(totalChannels)
-        // LinkedHashMap preserves order of first appearance of categories in playlist
-        val categoryCounts = LinkedHashMap<String, Int>()
+        val recentIds = preferencesRepository.getRecentChannelIds()
+        val uniqueChannelIds = uniqueChannels.map { it.id }.toSet()
+        val recentCount = recentIds.count { uniqueChannelIds.contains(it) }
 
+        // 1. System Categories (showing unique counts)
+        result.add(Category.all(uniqueTotalCount))
+        result.add(Category.favorites(uniqueFavCount))
+        result.add(Category.recent(recentCount))
+
+        // 2. Playlist Groups (preserving order of first appearance, skipping duplicate "ALL CHANNELS" group)
+        val seenGroups = LinkedHashSet<String>()
         for (ch in channelList) {
-            channelIdSet.add(ch.id)
-            if (ch.isFavorite) favCount++
             val group = ch.category.trim()
-            if (group.isNotEmpty()) {
-                categoryCounts[group] = (categoryCounts[group] ?: 0) + 1
+            if (group.isNotEmpty() &&
+                !group.equals("ALL CHANNELS", ignoreCase = true) &&
+                !group.equals("ALL", ignoreCase = true) &&
+                !group.equals("ALL CH", ignoreCase = true)
+            ) {
+                seenGroups.add(group)
             }
         }
 
-        val recentIds = preferencesRepository.getRecentChannelIds()
-        var recentCount = 0
-        for (rId in recentIds) {
-            if (channelIdSet.contains(rId)) recentCount++
-        }
+        for (groupName in seenGroups) {
+            val count = channelList
+                .filter { it.category.equals(groupName, ignoreCase = true) }
+                .distinctBy { it.streamUrl.ifBlank { it.name } }
+                .size
 
-        // System Categories
-        result.add(Category.all(totalChannels))
-        result.add(Category.favorites(favCount))
-        result.add(Category.recent(recentCount))
-
-        for ((groupName, count) in categoryCounts) {
             val catId = "cat_${groupName.lowercase().replace(" ", "_")}"
             result.add(
                 Category(
@@ -398,13 +402,14 @@ class PlaylistRepository(
      */
     fun getChannelsForCategory(categoryId: String): List<Channel> {
         return when (categoryId) {
-            Category.ID_ALL -> _channels.value
-            Category.ID_FAVORITES -> _channels.value.filter { it.isFavorite }
-            Category.ID_RECENT -> getRecentChannelsOrdered()
+            Category.ID_ALL -> _channels.value.distinctBy { it.streamUrl.ifBlank { it.name } }
+            Category.ID_FAVORITES -> _channels.value.filter { it.isFavorite }.distinctBy { it.streamUrl.ifBlank { it.name } }
+            Category.ID_RECENT -> getRecentChannelsOrdered().distinctBy { it.streamUrl.ifBlank { it.name } }
             else -> {
                 val cat = _categories.value.find { it.id == categoryId }
                 val targetName = cat?.name ?: categoryId
                 _channels.value.filter { it.category.equals(targetName, ignoreCase = true) }
+                    .distinctBy { it.streamUrl.ifBlank { it.name } }
             }
         }
     }
@@ -413,12 +418,7 @@ class PlaylistRepository(
      * Retrieves channels belonging to a given [Category].
      */
     fun getChannelsForCategory(category: Category): List<Channel> {
-        return when (category.id) {
-            Category.ID_ALL -> _channels.value
-            Category.ID_FAVORITES -> _channels.value.filter { it.isFavorite }
-            Category.ID_RECENT -> getRecentChannelsOrdered()
-            else -> _channels.value.filter { it.category.equals(category.name, ignoreCase = true) }
-        }
+        return getChannelsForCategory(category.id)
     }
 
     private fun getRecentChannelsOrdered(): List<Channel> {
@@ -431,8 +431,9 @@ class PlaylistRepository(
      */
     fun searchChannels(query: String): List<Channel> {
         val trimmed = query.trim()
-        if (trimmed.isEmpty()) return _channels.value
-        return _channels.value.filter { channel ->
+        val allDistinct = _channels.value.distinctBy { it.streamUrl.ifBlank { it.name } }
+        if (trimmed.isEmpty()) return allDistinct
+        return allDistinct.filter { channel ->
             channel.name.contains(trimmed, ignoreCase = true) ||
             channel.tvgName.contains(trimmed, ignoreCase = true) ||
             channel.category.contains(trimmed, ignoreCase = true) ||

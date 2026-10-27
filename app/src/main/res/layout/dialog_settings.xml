@@ -345,7 +345,53 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- 7) About Jolsha -->
+            <!-- 7) Developer -->
+            <LinearLayout
+                android:id="@+id/rowDeveloper"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dialog_item_height"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_dialog_item"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@string/settings_developer"
+                    android:src="@drawable/ic_developer"
+                    android:tint="@color/accent_primary_light" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_developer"
+                        android:textColor="@color/text_primary"
+                        android:textSize="@dimen/text_size_subtitle"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_developer_desc"
+                        android:textColor="@color/text_muted"
+                        android:textSize="@dimen/text_size_caption" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 8) About Jolsha -->
             <LinearLayout
                 android:id="@+id/rowAbout"
                 android:layout_width="match_parent"

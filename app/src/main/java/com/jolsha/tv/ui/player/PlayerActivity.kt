@@ -52,6 +52,7 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
     }
 
     private var isOsdVisible: Boolean = true
+    private var lastPlayedChannelId: String? = null
     private val timeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
 
     companion object {
@@ -154,15 +155,13 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
         // Error Next Channel Button
         binding.buttonNextChannel.setOnClickListener {
             binding.playerErrorView.visibility = View.GONE
-            val next = viewModel.nextChannel()
-            next?.let { switchChannel(it) }
+            viewModel.nextChannel()
         }
     }
 
     private fun setupQuickChannelGuide() {
         quickChannelAdapter = QuickChannelAdapter { selectedChannel ->
             viewModel.playChannel(selectedChannel)
-            switchChannel(selectedChannel)
             closeQuickGuide()
         }
 
@@ -189,7 +188,10 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
                         if (channel != null) {
                             quickChannelAdapter.currentPlayingChannelId = channel.id
                             updateChannelMetadata(channel)
-                            switchChannel(channel)
+                            if (channel.id != lastPlayedChannelId) {
+                                lastPlayedChannelId = channel.id
+                                switchChannel(channel)
+                            }
                         }
                     }
                 }
@@ -213,9 +215,13 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
     }
 
     private fun switchChannel(channel: Channel) {
-        binding.playerErrorView.visibility = View.GONE
-        playerManager.playChannel(channel)
-        showOsd()
+        try {
+            binding.playerErrorView.visibility = View.GONE
+            playerManager.playChannel(channel)
+            showOsd()
+        } catch (e: Exception) {
+            android.util.Log.e("PlayerActivity", "Error switching channel", e)
+        }
     }
 
     private fun updateChannelMetadata(channel: Channel) {
@@ -427,15 +433,13 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
             // Channel Switch Buttons
             KeyEvent.KEYCODE_CHANNEL_UP,
             KeyEvent.KEYCODE_PAGE_UP -> {
-                val next = viewModel.nextChannel()
-                next?.let { switchChannel(it) }
+                viewModel.nextChannel()
                 return true
             }
 
             KeyEvent.KEYCODE_CHANNEL_DOWN,
             KeyEvent.KEYCODE_PAGE_DOWN -> {
-                val prev = viewModel.previousChannel()
-                prev?.let { switchChannel(it) }
+                viewModel.previousChannel()
                 return true
             }
 
@@ -443,7 +447,6 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
             KeyEvent.KEYCODE_LAST_CHANNEL -> {
                 val recalled = viewModel.recallChannel()
                 if (recalled != null) {
-                    switchChannel(recalled)
                     Toast.makeText(this, "Recall: ${recalled.displayName}", Toast.LENGTH_SHORT).show()
                 }
                 return true
@@ -500,7 +503,11 @@ class PlayerActivity : AppCompatActivity(), PlaybackListener {
 
     override fun onResume() {
         super.onResume()
-        playerManager.resume()
+        try {
+            playerManager.resume()
+        } catch (e: Exception) {
+            android.util.Log.e("PlayerActivity", "Resume error", e)
+        }
     }
 
     override fun onPause() {

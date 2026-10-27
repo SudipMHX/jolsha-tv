@@ -56,6 +56,12 @@
     <string name="settings_about">About Jolsha</string>
     <string name="settings_about_desc">Version 1.0.0 • Clean, native Android TV player</string>
 
+    <!-- Developer Info -->
+    <string name="settings_developer">Developer</string>
+    <string name="settings_developer_desc">Mahatab Hossen Sudip • Full Stack Developer</string>
+    <string name="developer_dialog_title">Developer Information</string>
+    <string name="developer_dialog_message">Lead Developer:\nMahatab Hossen Sudip\nFull Stack Developer\n\nAI Assistant:\nClaude\n\nContact Address:\nsudipmhx@gmail.com\n\nApp: Jolsha Android TV IPTV</string>
+
     <!-- Player Messages -->
     <string name="playback_buffering">Connecting to stream…</string>
     <string name="playback_error_title">Playback Error</string>

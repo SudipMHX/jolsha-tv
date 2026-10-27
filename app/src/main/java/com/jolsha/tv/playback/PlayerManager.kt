@@ -121,9 +121,9 @@ class PlayerManager(context: Context) {
         val existing = exoPlayer
         if (existing != null) return existing
 
-        // 1. RenderersFactory with extension renderer mode and decoder fallback
+        // 1. RenderersFactory with decoder fallback
         val renderersFactory = DefaultRenderersFactory(appContext)
-            .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON)
+            .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_OFF)
             .setEnableDecoderFallback(true)
 
         // 2. Low-latency TV buffer tuning
@@ -191,26 +191,37 @@ class PlayerManager(context: Context) {
      * @param channel The TV channel to play.
      */
     fun playChannel(channel: Channel) {
-        cancelRetry()
-        retryCount = 0
-        currentChannel = channel
+        try {
+            cancelRetry()
+            retryCount = 0
+            currentChannel = channel
 
-        val activePlayer = exoPlayer ?: initializePlayer()
+            val activePlayer = exoPlayer ?: initializePlayer()
 
-        // Fast channel switching: immediately cancel previous stream
-        activePlayer.stop()
-        activePlayer.clearMediaItems()
+            // Fast channel switching: immediately cancel previous stream
+            activePlayer.stop()
+            activePlayer.clearMediaItems()
 
-        val mediaItem = buildMediaItem(channel)
-        activePlayer.setMediaItem(mediaItem)
-        activePlayer.prepare()
-        activePlayer.playWhenReady = true
+            val mediaItem = buildMediaItem(channel)
+            activePlayer.setMediaItem(mediaItem)
+            activePlayer.prepare()
+            activePlayer.playWhenReady = true
 
-        notifyPlaybackStateChanged(PlaybackState.Buffering)
+            notifyPlaybackStateChanged(PlaybackState.Buffering)
 
-        // Apply channel's custom aspect ratio if configured, otherwise retain current ratio
-        val targetRatio = channel.customAspectRatio ?: currentAspectRatio
-        currentPlayerView?.let { setAspectRatio(targetRatio, it) }
+            // Apply channel's custom aspect ratio if configured, otherwise retain current ratio
+            val targetRatio = channel.customAspectRatio ?: currentAspectRatio
+            currentPlayerView?.let { setAspectRatio(targetRatio, it) }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to play channel: ${channel.name}", e)
+            val err = PlaybackState.Error(
+                message = "Unable to play stream: ${e.message ?: "Unknown error"}",
+                isRecoverable = true,
+                retryCount = 0
+            )
+            notifyPlayerError(err)
+            notifyPlaybackStateChanged(err)
+        }
     }
 
     /**
@@ -277,22 +288,15 @@ class PlayerManager(context: Context) {
                 } else {
                     0f
                 }
-                contentFrame?.setAspectRatio(videoRatio)
-            }
-            AspectRatio.FILL -> {
-                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
-                contentFrame?.setAspectRatio(0f)
-            }
-            AspectRatio.ZOOM -> {
-                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                val videoRatio = if (currentVideoHeight > 0) {
-                    currentVideoWidth.toFloat() / currentVideoHeight.toFloat()
-                } else {
-                    0f
-                }
                 if (videoRatio > 0f) {
                     contentFrame?.setAspectRatio(videoRatio)
                 }
+            }
+            AspectRatio.FILL -> {
+                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+            }
+            AspectRatio.ZOOM -> {
+                playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
             }
             AspectRatio.SIXTEEN_BY_NINE -> {
                 playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
@@ -583,12 +587,24 @@ class PlayerManager(context: Context) {
      */
     private fun isNetworkConnected(): Boolean {
         val cm = appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
-            ?: return false
-        val activeNetwork = cm.activeNetwork ?: return false
-        val capabilities = cm.getNetworkCapabilities(activeNetwork) ?: return false
-        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ||
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            ?: return true
+        return try {
+            val activeNetwork = cm.activeNetwork
+            if (activeNetwork != null) {
+                val capabilities = cm.getNetworkCapabilities(activeNetwork)
+                if (capabilities != null) {
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
+                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                } else true
+            } else {
+                @Suppress("DEPRECATION")
+                val activeInfo = cm.activeNetworkInfo
+                activeInfo != null && activeInfo.isConnected
+            }
+        } catch (_: Exception) {
+            true
+        }
     }
 
     /**

@@ -189,6 +189,7 @@
         android:descendantFocusability="afterDescendants"
         android:nextFocusUp="@+id/buttonSearch"
         android:nextFocusDown="@+id/recyclerChannels"
+        android:nextFocusLeft="@+id/recyclerCategories"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
