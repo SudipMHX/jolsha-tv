@@ -1,6 +1,14 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+}
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(keystorePropertiesFile.inputStream())
 }
 
 android {
@@ -20,6 +28,21 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            val storeFilePath = keystoreProperties.getProperty("RELEASE_STORE_FILE") ?: "../keystore/release.jks"
+            val storeFileObj = file(storeFilePath)
+            if (storeFileObj.exists()) {
+                storeFile = storeFileObj
+                storePassword = keystoreProperties.getProperty("RELEASE_STORE_PASSWORD") ?: "jolsha123456"
+                keyAlias = keystoreProperties.getProperty("RELEASE_KEY_ALIAS") ?: "jolsha"
+                keyPassword = keystoreProperties.getProperty("RELEASE_KEY_PASSWORD") ?: "jolsha123456"
+                enableV1Signing = true
+                enableV2Signing = true
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -27,6 +50,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             applicationIdSuffix = ".debug"

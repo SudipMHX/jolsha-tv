@@ -122,20 +122,30 @@ D:\Projects\jolsha\
 ./gradlew testDebugUnitTest
 ```
 
-### 2. Assemble Debug APK
-```bash
-./gradlew assembleDebug
-```
-The compiled APK will be generated at:
-```
-app/build/outputs/apk/debug/app-debug.apk
-```
+### 2. Assemble APKs
+- **Signed Release APK**:
+  ```bash
+  ./gradlew assembleRelease
+  ```
+  Generates production-signed APK at:
+  ```
+  app/build/outputs/apk/release/app-release.apk
+  ```
+
+- **Debug APK**:
+  ```bash
+  ./gradlew assembleDebug
+  ```
+  Generates debug APK at:
+  ```
+  app/build/outputs/apk/debug/app-debug.apk
+  ```
 
 ### 3. Install on Android TV via ADB
 Connect to your Android TV device via Wi-Fi or USB:
 ```bash
 adb connect <TV_IP_ADDRESS>:5555
-adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb install -r app/build/outputs/apk/release/app-release.apk
 ```
 
 ---
