@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-27T14:07:05" hostname="SUDIPMHX-PC" time="0.549">
+  <properties/>
+  <testcase name="testExtremeUrlsWithAuthTokensAndQueryParams" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.001"/>
+  <testcase name="testNegativeAndExtremeDurations" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.001"/>
+  <testcase name="testSupportedStreamingSchemes" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.001"/>
+  <testcase name="testFavoritesAndRecentChannelsLruCap" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.01"/>
+  <testcase name="testCorruptedExtInfUnclosedQuotes" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.001"/>
+  <testcase name="testExtremeUrlsWithPortsIpv4AndIpv6" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.002"/>
+  <testcase name="testCompositeIdCollisionPrevention" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.002"/>
+  <testcase name="testChannelSortingMechanisms" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.009"/>
+  <testcase name="testRapidChannelSwitchingSimulation" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.02"/>
+  <testcase name="testQuickChannelGuideSelectionAndCategorySwitching" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.01"/>
+  <testcase name="testCorruptedExtInfMissingCommas" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.007"/>
+  <testcase name="testExtremeUrlsWithEncodedAndUnencodedSpaces" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.001"/>
+  <testcase name="testHighVolumePlaylistStress10000Entries" classname="com.jolsha.tv.data.PlaylistStressAndEdgeCaseTest" time="0.478"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/categoryRoot"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/tv_category_height"
+    android:layout_marginEnd="@dimen/tv_category_spacing"
+    android:background="@drawable/bg_category_tab"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/tv_category_padding_h"
+    android:paddingEnd="@dimen/tv_category_padding_h">
+
+    <TextView
+        android:id="@+id/textCategoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/color_category_tab_text"
+        android:textSize="@dimen/text_size_subtitle"
+        android:textStyle="bold"
+        tools:text="Bangla" />
+
+    <TextView
+        android:id="@+id/textCategoryCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_category_count"
+        android:textColor="@color/color_category_tab_text"
+        android:textSize="@dimen/text_size_caption"
+        android:textStyle="normal"
+        tools:text="28" />
+
+</LinearLayout>

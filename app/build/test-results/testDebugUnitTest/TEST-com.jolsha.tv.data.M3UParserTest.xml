@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.jolsha.tv.data.M3UParserTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-27T14:01:19" hostname="SUDIPMHX-PC" time="0.049">
+  <properties/>
+  <testcase name="testIdenticalUrlsInMultipleCategories" classname="com.jolsha.tv.data.M3UParserTest" time="0.002"/>
+  <testcase name="testUnicodeChannelNames" classname="com.jolsha.tv.data.M3UParserTest" time="0.003"/>
+  <testcase name="testParseValidM3URealSample" classname="com.jolsha.tv.data.M3UParserTest" time="0.004"/>
+  <testcase name="testMalformedEntriesBlankLinesAndInvalidUrls" classname="com.jolsha.tv.data.M3UParserTest" time="0.003"/>
+  <testcase name="testUserPreferences" classname="com.jolsha.tv.data.M3UParserTest" time="0.001"/>
+  <testcase name="testSearchFilteringInRepository" classname="com.jolsha.tv.data.M3UParserTest" time="0.007"/>
+  <testcase name="testUnquotedAttributesAndIrregularWhitespace" classname="com.jolsha.tv.data.M3UParserTest" time="0.002"/>
+  <testcase name="testFavoritesAndRecentChannels" classname="com.jolsha.tv.data.M3UParserTest" time="0.015"/>
+  <testcase name="testCategoryExtractionAndGroupingInRepository" classname="com.jolsha.tv.data.M3UParserTest" time="0.006"/>
+  <testcase name="testMissingTvgAttributes" classname="com.jolsha.tv.data.M3UParserTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

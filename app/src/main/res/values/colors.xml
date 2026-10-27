@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Canvas & Backgrounds -->
+    <color name="bg_main">#090C11</color>
+    <color name="bg_main_dark">#06080C</color>
+    <color name="bg_surface">#131822</color>
+    <color name="bg_surface_elevated">#181F2C</color>
+    <color name="bg_surface_card">#141A24</color>
+    <color name="bg_surface_card_selected">#1C2433</color>
+    <color name="bg_card_focused">#222D3E</color>
+    <color name="border_card">#222B38</color>
+    <color name="border_card_subtle">#1A212D</color>
+    <color name="border_card_focused">#FF9E1B</color>
+
+    <!-- Jolsha Accent & Brand Glow -->
+    <color name="accent_primary">#FF9E1B</color>
+    <color name="accent_primary_light">#FFB84D</color>
+    <color name="accent_primary_dark">#D97706</color>
+    <color name="accent_secondary">#FF5722</color>
+    <color name="accent_amber_glow">#66FF9E1B</color>
+    <color name="accent_amber_subtle">#26FF9E1B</color>
+    <color name="accent_amber_bg">#332514</color>
+
+    <!-- Typography -->
+    <color name="text_primary">#F1F5F9</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_muted">#64748B</color>
+    <color name="text_on_accent">#090C11</color>
+    <color name="text_amber">#FFB84D</color>
+
+    <!-- Status & Badges -->
+    <color name="status_live">#EF4444</color>
+    <color name="status_live_bg">#3B1414</color>
+    <color name="badge_fhd_bg">#1E293B</color>
+    <color name="badge_fhd_text">#38BDF8</color>
+    <color name="badge_hd_bg">#1E293B</color>
+    <color name="badge_hd_text">#A5B4FC</color>
+    <color name="favorite_active">#FFB84D</color>
+
+    <!-- TV HUD & Overlays -->
+    <color name="hud_background">#D90A0D13</color>
+    <color name="hud_background_dark">#F007090E</color>
+    <color name="hud_border">#2C3545</color>
+    <color name="overlay_dim">#A6000000</color>
+    <color name="drawer_background">#F20B0F16</color>
+
+    <!-- Interactive Elements -->
+    <color name="button_normal">#1A2230</color>
+    <color name="button_border">#293548</color>
+    <color name="button_focused">#FF9E1B</color>
+    <color name="button_focused_stroke">#FFE082</color>
+
+    <!-- Standard Colors -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="white_80">#CCFFFFFF</color>
+    <color name="white_60">#99FFFFFF</color>
+    <color name="white_40">#66FFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="transparent">#00000000</color>
+</resources>

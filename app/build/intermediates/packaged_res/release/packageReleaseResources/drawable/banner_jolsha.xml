@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+
+    <!-- Background Canvas -->
+    <path
+        android:pathData="M0,0 L320,0 L320,180 L0,180 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="320"
+                android:endY="180"
+                android:type="linear">
+                <item android:color="#FF0D121B" android:offset="0.0" />
+                <item android:color="#FF070A0F" android:offset="0.6" />
+                <item android:color="#FF040508" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Ambient Center Flame Radial Glow -->
+    <path
+        android:pathData="M160,90 m-120,0 a120,90 0 1,0 240,0 a120,90 0 1,0 -240,0"
+        android:fillAlpha="0.15">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:centerX="160"
+                android:centerY="90"
+                android:gradientRadius="130"
+                android:type="radial">
+                <item android:color="#FFFF9E1B" android:offset="0.0" />
+                <item android:color="#80FF5722" android:offset="0.5" />
+                <item android:color="#00090C11" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Geometric Ambient Angular Lines -->
+    <path
+        android:pathData="M-20,180 L110,0 L135,0 L5,180 Z"
+        android:fillAlpha="0.03"
+        android:fillColor="#FFFFFF" />
+    <path
+        android:pathData="M230,180 L340,30 L360,30 L250,180 Z"
+        android:fillAlpha="0.03"
+        android:fillColor="#FFFFFF" />
+
+    <!-- Jolsha Icon / Flame Symbol (Centered top/mid: cx=160, cy=60) -->
+    <!-- Flame Aura -->
+    <path
+        android:pathData="M160,28 C166,41 185,52 185,69 C185,83 174,93 160,93 C146,93 135,83 135,69 C135,55 149,44 154,34 C154,34 152,45 159,48 C164,50 167,43 160,28 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="135"
+                android:startY="28"
+                android:endX="185"
+                android:endY="93"
+                android:type="linear">
+                <item android:color="#FFFFB84D" android:offset="0.0" />
+                <item android:color="#FFFF9E1B" android:offset="0.45" />
+                <item android:color="#FFFF5722" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Inner Core Play Spark -->
+    <path
+        android:pathData="M157,56 L171,65 L157,74 Z"
+        android:fillColor="#FFFFFF" />
+
+    <!-- Left & Right Broadcast Radio Wings -->
+    <path
+        android:pathData="M130,55 C124,62 124,72 130,79"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:startX="130"
+                android:startY="55"
+                android:endX="124"
+                android:endY="79"
+                android:type="linear">
+                <item android:color="#FFFFB84D" android:offset="0.0" />
+                <item android:color="#FFFF5722" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:pathData="M190,55 C196,62 196,72 190,79"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:startX="190"
+                android:startY="55"
+                android:endX="196"
+                android:endY="79"
+                android:type="linear">
+                <item android:color="#FFFFB84D" android:offset="0.0" />
+                <item android:color="#FFFF5722" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Wordmark "J O L S H A" (Centered at y=108 -> 132) -->
+    <!-- 'J' -->
+    <path
+        android:pathData="M88,110 L94,110 L94,126 C94,130 91,133 86,133 C81,133 78,130 78,127 L83,127 C83,128.5 84.5,129.5 86,129.5 C88.5,129.5 90,128 90,126 L90,110 Z"
+        android:fillColor="#F1F5F9" />
+
+    <!-- 'O' -->
+    <path
+        android:pathData="M110,109.5 C117.5,109.5 123,114.5 123,123 C123,131.5 117.5,133.5 110,133.5 C102.5,133.5 97,131.5 97,123 C97,114.5 102.5,109.5 110,109.5 Z M110,113.5 C105,113.5 102,117.5 102,123 C102,128.5 105,130 110,130 C115,130 118,128.5 118,123 C118,117.5 115,113.5 110,113.5 Z"
+        android:fillColor="#F1F5F9" />
+
+    <!-- 'L' -->
+    <path
+        android:pathData="M129,110 L134,110 L134,129.5 L149,129.5 L149,133.5 L129,133.5 Z"
+        android:fillColor="#F1F5F9" />
+
+    <!-- 'S' -->
+    <path
+        android:pathData="M170,114 L166,116 C165,114 163,113 160.5,113 C157.5,113 155.5,114.5 155.5,116.5 C155.5,118.5 157.2,119.7 162,121 C167.5,122.3 171.5,124.5 171.5,128.5 C171.5,133 167,133.8 161.5,133.8 C156,133.8 152,131.5 150.5,128 L154.5,126 C155.8,128.5 158.5,130 161.5,130 C164.5,130 166.5,129 166.5,127 C166.5,125 164.5,124 160,122.8 C154.5,121.5 151,119.5 151,115.5 C151,111.5 155,109.5 160.5,109.5 C165,109.5 168.5,111.5 170,114 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="150"
+                android:startY="110"
+                android:endX="172"
+                android:endY="134"
+                android:type="linear">
+                <item android:color="#FFFFB84D" android:offset="0.0" />
+                <item android:color="#FFFF9E1B" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- 'H' -->
+    <path
+        android:pathData="M178,110 L183,110 L183,119.5 L196,119.5 L196,110 L201,110 L201,133.5 L196,133.5 L196,123.5 L183,123.5 L183,133.5 L178,133.5 Z"
+        android:fillColor="#F1F5F9" />
+
+    <!-- 'A' -->
+    <path
+        android:pathData="M217,110 L223,110 L233,133.5 L227.5,133.5 L225,127 L215,127 L212.5,133.5 L207,133.5 L217,110 Z M220,115.5 L216.5,123.5 L223.5,123.5 L220,115.5 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="207"
+                android:startY="110"
+                android:endX="233"
+                android:endY="134"
+                android:type="linear">
+                <item android:color="#FFFF9E1B" android:offset="0.0" />
+                <item android:color="#FFFF5722" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Subtitle Pill: "ANDROID TV" / "IPTV" -->
+    <path
+        android:pathData="M115,148 L205,148 A6,6 0 0 1 211,154 A6,6 0 0 1 205,160 L115,160 A6,6 0 0 1 109,154 A6,6 0 0 1 115,148 Z"
+        android:fillColor="#1A2230"
+        android:strokeColor="#2F3B4E"
+        android:strokeWidth="1" />
+
+    <!-- Subtitle Text "LIVE STREAMING" / "ANDROID TV" -->
+    <path
+        android:pathData="M125,152 L127,152 L127,156 L129,156 L129,157 L125,157 Z M131,152 L132.5,152 L132.5,157 L131,157 Z M134,152 L135.5,152 L137,155.5 L138.5,152 L140,152 L137.8,157 L136.2,157 Z M141.5,152 L145.5,152 L145.5,153 L143,153 L143,154 L145,154 L145,155 L143,155 L143,156 L145.5,156 L145.5,157 L141.5,157 Z"
+        android:fillColor="#94A3B8" />
+
+    <!-- Amber Dot -->
+    <path
+        android:pathData="M150,154.5 m-2,0 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0"
+        android:fillColor="#FF9E1B" />
+
+    <!-- "TV" letters -->
+    <path
+        android:pathData="M157,152 L163,152 L163,153.2 L160.8,153.2 L160.8,157 L159.2,157 L159.2,153.2 L157,153.2 Z M164.5,152 L166.5,152 L168,155.5 L169.5,152 L171.5,152 L169,157 L167,157 Z"
+        android:fillColor="#FFB84D" />
+
+    <path
+        android:pathData="M176,154.5 m-2,0 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0"
+        android:fillColor="#FF9E1B" />
+
+    <!-- "HD" letters -->
+    <path
+        android:pathData="M182,152 L183.5,152 L183.5,154 L186.5,154 L186.5,152 L188,152 L188,157 L186.5,157 L186.5,155.2 L183.5,155.2 L183.5,157 L182,157 Z M190,152 L193,152 C194.8,152 196,153 196,154.5 C196,156 194.8,157 193,157 L190,157 Z M191.5,153.2 L191.5,155.8 L193,155.8 C193.8,155.8 194.5,155.3 194.5,154.5 C194.5,153.7 193.8,153.2 193,153.2 Z"
+        android:fillColor="#94A3B8" />
+</vector>

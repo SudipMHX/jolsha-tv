@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="440dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_card"
+    android:padding="28dp">
+
+    <!-- Header -->
+    <ImageView
+        android:id="@+id/audioDialogIcon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:contentDescription="@string/dialog_audio_tracks_title"
+        android:src="@drawable/ic_audio_track"
+        android:tint="@color/accent_primary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/audioDialogTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="@string/dialog_audio_tracks_title"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_large_title"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/audioDialogIcon"
+        app:layout_constraintEnd_toStartOf="@id/audioDialogButtonClose"
+        app:layout_constraintStart_toEndOf="@id/audioDialogIcon"
+        app:layout_constraintTop_toTopOf="@id/audioDialogIcon" />
+
+    <ImageView
+        android:id="@+id/audioDialogButtonClose"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/action_close"
+        android:focusable="true"
+        android:src="@drawable/ic_close"
+        android:tint="@color/text_secondary"
+        app:layout_constraintBottom_toBottomOf="@id/audioDialogIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/audioDialogIcon" />
+
+    <View
+        android:id="@+id/audioDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/border_card"
+        app:layout_constraintTop_toBottomOf="@id/audioDialogIcon" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerAudioTracks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:descendantFocusability="afterDescendants"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/audioDivider"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_dialog_audio_track" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

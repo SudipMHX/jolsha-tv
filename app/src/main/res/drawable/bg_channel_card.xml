@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Focused State (Electric Amber Stroke + Elevated Glass Background) -->
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/tv_card_radius" />
+            <gradient
+                android:angle="270"
+                android:startColor="#FF283344"
+                android:endColor="#FF1E2736"
+                android:type="linear" />
+            <stroke
+                android:width="@dimen/tv_card_focused_border_width"
+                android:color="@color/border_card_focused" />
+        </shape>
+    </item>
+
+    <!-- Selected State -->
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/tv_card_radius" />
+            <solid android:color="@color/bg_surface_card_selected" />
+            <stroke
+                android:width="@dimen/tv_card_border_width"
+                android:color="@color/accent_primary" />
+        </shape>
+    </item>
+
+    <!-- Default / Normal State (Deep Obsidian Glass with Subtle Border) -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/tv_card_radius" />
+            <solid android:color="@color/bg_surface_card" />
+            <stroke
+                android:width="@dimen/tv_card_border_width"
+                android:color="@color/border_card" />
+        </shape>
+    </item>
+</selector>

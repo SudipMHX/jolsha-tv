@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TV Safe Zone Margins (5% overscan protection) -->
+    <dimen name="tv_safe_margin_horizontal">48dp</dimen>
+    <dimen name="tv_safe_margin_vertical">28dp</dimen>
+
+    <!-- Header Dimensions -->
+    <dimen name="tv_header_height">52dp</dimen>
+    <dimen name="tv_logo_width">140dp</dimen>
+    <dimen name="tv_logo_height">36dp</dimen>
+
+    <!-- Category Row -->
+    <dimen name="tv_category_height">38dp</dimen>
+    <dimen name="tv_category_radius">19dp</dimen>
+    <dimen name="tv_category_padding_h">18dp</dimen>
+    <dimen name="tv_category_spacing">10dp</dimen>
+
+    <!-- Channel Card Grid -->
+    <dimen name="tv_card_height">126dp</dimen>
+    <dimen name="tv_card_radius">12dp</dimen>
+    <dimen name="tv_card_border_width">1.5dp</dimen>
+    <dimen name="tv_card_focused_border_width">2.5dp</dimen>
+    <dimen name="tv_card_logo_size">48dp</dimen>
+    <dimen name="tv_card_logo_radius">8dp</dimen>
+    <dimen name="tv_card_padding">12dp</dimen>
+    <dimen name="tv_grid_spacing">14dp</dimen>
+
+    <!-- Pill Action Buttons -->
+    <dimen name="tv_button_height">40dp</dimen>
+    <dimen name="tv_button_radius">20dp</dimen>
+    <dimen name="tv_button_padding_h">16dp</dimen>
+
+    <!-- Player HUD Overlays -->
+    <dimen name="tv_hud_padding_h">48dp</dimen>
+    <dimen name="tv_hud_padding_v">24dp</dimen>
+    <dimen name="tv_hud_logo_size">56dp</dimen>
+    <dimen name="tv_hud_action_height">42dp</dimen>
+    <dimen name="tv_hud_action_radius">21dp</dimen>
+
+    <!-- Quick Guide Drawer -->
+    <dimen name="tv_drawer_width">380dp</dimen>
+    <dimen name="tv_quick_item_height">64dp</dimen>
+
+    <!-- Typography -->
+    <dimen name="text_size_hero">28sp</dimen>
+    <dimen name="text_size_large_title">22sp</dimen>
+    <dimen name="text_size_title">18sp</dimen>
+    <dimen name="text_size_subtitle">15sp</dimen>
+    <dimen name="text_size_body">13sp</dimen>
+    <dimen name="text_size_caption">11sp</dimen>
+    <dimen name="text_size_badge">10sp</dimen>
+
+    <!-- Dialog Dimensions -->
+    <dimen name="dialog_settings_width">520dp</dimen>
+    <dimen name="dialog_settings_radius">16dp</dimen>
+    <dimen name="dialog_item_height">52dp</dimen>
+</resources>

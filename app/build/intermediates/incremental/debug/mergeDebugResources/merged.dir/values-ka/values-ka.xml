@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <string-array name="exo_controls_playback_speeds">
+    <item>0,25x</item>
+    <item>0,5x</item>
+    <item>0,75x</item>
+    <item>ჩვეულებრივი</item>
+    <item>1,25x</item>
+    <item>1,5x</item>
+    <item>2x</item>
+  </string-array>
+    <plurals name="exo_controls_fastforward_by_amount_description">
+    <item quantity="one">წინ გადახვევა %d წამით</item>
+    <item quantity="other">წინ გადახვევა %d წამით</item>
+  </plurals>
+    <plurals name="exo_controls_rewind_by_amount_description">
+    <item quantity="one">უკან გადახვევა %d წამით</item>
+    <item quantity="other">უკან გადახვევა %d წამით</item>
+  </plurals>
+    <string msgid="5976598919945601918" name="abc_action_bar_home_description">"მთავარზე გადასვლა"</string>
+    <string msgid="8388173803310557296" name="abc_action_bar_up_description">"ზემოთ გადასვლა"</string>
+    <string msgid="3937310113216875497" name="abc_action_menu_overflow_description">"სხვა ვარიანტები"</string>
+    <string msgid="4692188335987374352" name="abc_action_mode_done">"მზადაა"</string>
+    <string msgid="1189761859438369441" name="abc_activity_chooser_view_see_all">"ყველას ნახვა"</string>
+    <string msgid="2165779757652331008" name="abc_activitychooserview_choose_application">"აირჩიეთ აპი"</string>
+    <string msgid="4215997306490295099" name="abc_capital_off">"გამორთვა"</string>
+    <string msgid="884982626291842264" name="abc_capital_on">"ჩართვა"</string>
+    <string msgid="8833365367933412986" name="abc_menu_alt_shortcut_label">"Alt+"</string>
+    <string msgid="2223301931652355242" name="abc_menu_ctrl_shortcut_label">"Ctrl+"</string>
+    <string msgid="838001238306846836" name="abc_menu_delete_shortcut_label">"delete"</string>
+    <string msgid="7986526966204849475" name="abc_menu_enter_shortcut_label">"enter"</string>
+    <string msgid="375214403600139847" name="abc_menu_function_shortcut_label">"Function+"</string>
+    <string msgid="4192209724446364286" name="abc_menu_meta_shortcut_label">"Meta+"</string>
+    <string msgid="4741552369836443843" name="abc_menu_shift_shortcut_label">"Shift+"</string>
+    <string msgid="5473865519181928982" name="abc_menu_space_shortcut_label">"შორისი"</string>
+    <string msgid="6180552449598693998" name="abc_menu_sym_shortcut_label">"Sym+"</string>
+    <string msgid="5520303668377388990" name="abc_prepend_shortcut_label">"Menu+"</string>
+    <string msgid="7208076849092622260" name="abc_search_hint">"ძიება…"</string>
+    <string msgid="3741173234950517107" name="abc_searchview_description_clear">"მოთხოვნის გასუფთავება"</string>
+    <string msgid="693312494995508443" name="abc_searchview_description_query">"მოთხოვნის ძიება"</string>
+    <string msgid="3417662926640357176" name="abc_searchview_description_search">"ძიება"</string>
+    <string msgid="1486535517437947103" name="abc_searchview_description_submit">"მოთხოვნის გადაგზავნა"</string>
+    <string msgid="2293578557972875415" name="abc_searchview_description_voice">"ხმოვანი ძიება"</string>
+    <string msgid="8875138169939072951" name="abc_shareactionprovider_share_with">"გაზიარება:"</string>
+    <string msgid="9055268688411532828" name="abc_shareactionprovider_share_with_application">"<ns1:g id="APPLICATION_NAME">%s</ns1:g>-ით გაზიარება"</string>
+    <string msgid="1656852541809559762" name="abc_toolbar_collapse_description">"ჩაკეცვა"</string>
+    <string msgid="881409763997275156" name="call_notification_answer_action">"პასუხი"</string>
+    <string msgid="8793775615905189152" name="call_notification_answer_video_action">"ვიდეო"</string>
+    <string msgid="3229508546291798546" name="call_notification_decline_action">"უარყოფა"</string>
+    <string msgid="2659457946726154263" name="call_notification_hang_up_action">"გათიშვა"</string>
+    <string msgid="6107532579223922871" name="call_notification_incoming_text">"შემომავალი ზარი"</string>
+    <string msgid="8623827134497363134" name="call_notification_ongoing_text">"მიმდინარე ზარი"</string>
+    <string msgid="59049573811482460" name="call_notification_screening_text">"შემომავალი ზარების გაცხრილვა"</string>
+    <string name="exo_controls_cc_disabled_description">სუბტიტრების ჩართვა</string>
+    <string name="exo_controls_cc_enabled_description">სუბტიტრების გათიშვა</string>
+    <string name="exo_controls_fastforward_description">წინ გადახვევა</string>
+    <string name="exo_controls_fullscreen_enter_description">სრულეკრანიან რეჟიმში შესვლა</string>
+    <string name="exo_controls_fullscreen_exit_description">სრულეკრანიანი რეჟიმიდან გამოსვლა</string>
+    <string name="exo_controls_hide">დამკვრელის სამართავი ღილაკების დამალვა</string>
+    <string name="exo_controls_next_description">შემდეგ</string>
+    <string name="exo_controls_overflow_hide_description">დამატებითი პარამეტრების დამალვა</string>
+    <string name="exo_controls_overflow_show_description">დამატებითი პარამეტრების ჩვენება</string>
+    <string name="exo_controls_pause_description">პაუზა</string>
+    <string name="exo_controls_play_description">დაკვრა</string>
+    <string name="exo_controls_playback_speed">სიჩქარე</string>
+    <string name="exo_controls_previous_description">წინა</string>
+    <string name="exo_controls_repeat_all_description">მიმდინარე რეჟიმი: ყველას გამეორება. გადართეთ გამეორების რეჟიმი.</string>
+    <string name="exo_controls_repeat_off_description">მიმდინარე რეჟიმი: არაფრის გამეორება. გადართეთ გამეორების რეჟიმი.</string>
+    <string name="exo_controls_repeat_one_description">მიმდინარე რეჟიმი: ერთის გამეორება. გადართეთ გამეორების რეჟიმი.</string>
+    <string name="exo_controls_rewind_description">უკან გადახვევა</string>
+    <string name="exo_controls_seek_bar_description">დაკვრის პროგრესი</string>
+    <string name="exo_controls_settings_description">პარამეტრები</string>
+    <string name="exo_controls_show">დამკვრელის სამართავი ღილაკების ჩვენება</string>
+    <string name="exo_controls_shuffle_off_description">არეულად დაკვრის რეჟიმის ჩართვა</string>
+    <string name="exo_controls_shuffle_on_description">არეულად დაკვრის რეჟიმის გათიშვა</string>
+    <string name="exo_controls_stop_description">შეწყვეტა</string>
+    <string name="exo_controls_vr_description">VR რეჟიმი</string>
+    <string name="exo_download_completed">ჩამოტვირთვა დასრულდა</string>
+    <string name="exo_download_description">ჩამოტვირთვა</string>
+    <string name="exo_download_downloading">მიმდინარეობს ჩამოტვირთვა</string>
+    <string name="exo_download_failed">ჩამოტვირთვა ვერ მოხერხდა</string>
+    <string name="exo_download_notification_channel_name">ჩამოტვირთვები</string>
+    <string name="exo_download_paused">ჩამოტვირთვები დაპაუზებულია</string>
+    <string name="exo_download_paused_for_network">ჩამოტვირთვები ქსელს ელოდება</string>
+    <string name="exo_download_paused_for_wifi">ჩამოტვირთვები Wi-Fi-ს ელოდება</string>
+    <string name="exo_download_removing">მიმდინარეობს ჩამოტვირთვების ამოშლა</string>
+    <string name="exo_item_list">%1$s, %2$s</string>
+    <string name="exo_track_bitrate">%1$.2f მბიტ/წმ</string>
+    <string name="exo_track_mono">მონო</string>
+    <string name="exo_track_resolution">%1$d × %2$d</string>
+    <string name="exo_track_role_alternate">ალტერნატიული</string>
+    <string name="exo_track_role_closed_captions">დახურული სუბტიტრები</string>
+    <string name="exo_track_role_commentary">კომენტარი</string>
+    <string name="exo_track_role_supplementary">დამატებითი</string>
+    <string name="exo_track_selection_auto">ავტომატური</string>
+    <string name="exo_track_selection_none">არცერთი</string>
+    <string name="exo_track_selection_title_audio">აუდიო</string>
+    <string name="exo_track_stereo">სტერეო</string>
+    <string name="exo_track_surround">მოცულობითი ხმა</string>
+    <string name="exo_track_surround_5_point_1">5.1 მოცულობითი ხმა</string>
+    <string name="exo_track_surround_7_point_1">7.1 მოცულობითი ხმა</string>
+    <string name="exo_track_unknown">უცნობი</string>
+    <string name="exo_track_unknown_name">უცნობი (%1$s)</string>
+    <string msgid="2721825378927619928" name="lb_control_display_fast_forward_multiplier">"%1$dX"</string>
+    <string msgid="6173753802428649303" name="lb_control_display_rewind_multiplier">"%1$dX"</string>
+    <string msgid="1122271825827282965" name="lb_guidedaction_continue_title">"გაგრძელება"</string>
+    <string msgid="7747913934287176843" name="lb_guidedaction_finish_title">"დასრულება"</string>
+    <string msgid="8748646000835486516" name="lb_media_player_error">"MediaPlayer-ის შეცდომის კოდი: %1$d extra %2$d"</string>
+    <string msgid="8126335323963415494" name="lb_navigation_menu_contentDescription">"ნავიგაციის მენიუ"</string>
+    <string msgid="4213611627196077555" name="lb_onboarding_accessibility_next">"შემდეგი"</string>
+    <string msgid="7674487829030291492" name="lb_onboarding_get_started">"დაწყება"</string>
+    <string msgid="5508271941331836786" name="lb_playback_controls_closed_captioning_disable">"დახურული წარწერების გაუქმება"</string>
+    <string msgid="3934392140182327163" name="lb_playback_controls_closed_captioning_enable">"დახურული წარწერების ჩართვა"</string>
+    <string msgid="8966769845721269304" name="lb_playback_controls_fast_forward">"წინ გადახვევა"</string>
+    <string msgid="801276177839339511" name="lb_playback_controls_fast_forward_multiplier">"სწრაფი გადამისამართება %1$dX"</string>
+    <string msgid="619396299825306757" name="lb_playback_controls_hidden">"მედიის მართვის საშუალებები დამალულია, გამოსაჩენად დააჭირეთ D-pad-ს"</string>
+    <string msgid="3000046054608531995" name="lb_playback_controls_high_quality_disable">"მაღალი ხარისხის გამორთვა"</string>
+    <string msgid="1862669142355962638" name="lb_playback_controls_high_quality_enable">"მაღალი ხარისხის ჩართვა"</string>
+    <string msgid="2827883329510404797" name="lb_playback_controls_more_actions">"დამატებითი ქმედებები"</string>
+    <string msgid="1769131316742618433" name="lb_playback_controls_pause">"პაუზა"</string>
+    <string msgid="8800305194045609275" name="lb_playback_controls_picture_in_picture">"რეჟიმზე „ეკრანი ეკრანში“ გადასვლა"</string>
+    <string msgid="1590369760862605402" name="lb_playback_controls_play">"დაკვრა"</string>
+    <string msgid="5164826436271322261" name="lb_playback_controls_repeat_all">"ყველას გამეორება"</string>
+    <string msgid="5812341701962930499" name="lb_playback_controls_repeat_none">"არცერთის გამეორება"</string>
+    <string msgid="7675097479246139440" name="lb_playback_controls_repeat_one">"ერთის გამეორება"</string>
+    <string msgid="1412664391757869774" name="lb_playback_controls_rewind">"უკან გადახვევა"</string>
+    <string msgid="8651612807713092781" name="lb_playback_controls_rewind_multiplier">"გადახვევა %1$dX"</string>
+    <string msgid="7794717158616536936" name="lb_playback_controls_shown">"ნაჩვენებია მედიის მართვის საშუალებები"</string>
+    <string msgid="8182435535948303910" name="lb_playback_controls_shuffle_disable">"არეულად დაკვრის გამორთვა"</string>
+    <string msgid="7809089255981448519" name="lb_playback_controls_shuffle_enable">"არეულად დაკვრის ჩართვა"</string>
+    <string msgid="4877009494447817003" name="lb_playback_controls_skip_next">"შემდეგის გამოტოვება"</string>
+    <string msgid="3147124289285911980" name="lb_playback_controls_skip_previous">"წინას გამოტოვება"</string>
+    <string msgid="5075744418630733006" name="lb_playback_controls_thumb_down">"დაბალი შეფასების არჩევის გაუქმება"</string>
+    <string msgid="2847309435442474470" name="lb_playback_controls_thumb_down_outline">"დაბალი შეფასების არჩევა"</string>
+    <string msgid="8332816524260995892" name="lb_playback_controls_thumb_up">"მაღალი შეფასების არჩევის გაუქმება"</string>
+    <string msgid="1038344559734334272" name="lb_playback_controls_thumb_up_outline">"მაღალი შეფასების არჩევა"</string>
+    <string msgid="6549544638083578695" name="lb_playback_time_separator">"/"</string>
+    <string msgid="4819380969103509861" name="lb_search_bar_hint">"ძიება"</string>
+    <string msgid="2795474673510974502" name="lb_search_bar_hint_speech">"თქვით საძიებო ფრაზა"</string>
+    <string msgid="7453744869467668159" name="lb_search_bar_hint_with_title">"<ns1:g id="SEARCH_CONTEXT">%1$s</ns1:g>-ის ძიება"</string>
+    <string msgid="5851694095153624617" name="lb_search_bar_hint_with_title_speech">"თქვით <ns1:g id="SEARCH_CONTEXT">%1$s</ns1:g>-ის საძიებლად"</string>
+    <string msgid="7534843523462177008" name="orb_search_action">"ძიების მოქმედება"</string>
+    <string msgid="6264217191555673260" name="search_menu_title">"ძიება"</string>
+    <string msgid="6277540029070332960" name="status_bar_notification_info_overflow">"999+"</string>
+</resources>

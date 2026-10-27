@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardRoot"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/tv_card_height"
+    android:background="@drawable/bg_channel_card"
+    android:clickable="true"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:padding="@dimen/tv_card_padding">
+
+    <!-- Channel Logo Container -->
+    <FrameLayout
+        android:id="@+id/logoContainer"
+        android:layout_width="@dimen/tv_card_logo_size"
+        android:layout_height="@dimen/tv_card_logo_size"
+        android:background="@drawable/bg_channel_logo_placeholder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageChannelLogo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:padding="4dp"
+            android:scaleType="fitCenter"
+            tools:src="@drawable/ic_tv" />
+
+        <!-- Fallback Monogram Badge when Logo is Empty -->
+        <TextView
+            android:id="@+id/textLogoFallback"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/accent_primary_light"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="BTV" />
+    </FrameLayout>
+
+    <!-- Top Right Meta: Channel Number & Favorite Star -->
+    <LinearLayout
+        android:id="@+id/topRightMeta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|end"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Channel Number Badge -->
+        <TextView
+            android:id="@+id/textChannelNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_muted"
+            android:textSize="@dimen/text_size_caption"
+            android:textStyle="bold"
+            tools:text="#001" />
+
+        <!-- Favorite Star Icon -->
+        <ImageView
+            android:id="@+id/imageFavoriteBadge"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="6dp"
+            android:contentDescription="@string/category_favorites"
+            android:src="@drawable/ic_favorite"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <!-- Category Tag Pill -->
+    <TextView
+        android:id="@+id/textCategoryTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/bg_badge_resolution"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_size_badge"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@id/topRightMeta"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@id/logoContainer"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="BANGLA" />
+
+    <!-- Channel Name -->
+    <TextView
+        android:id="@+id/textChannelName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_subtitle"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logoContainer"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="Somoy TV HD" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

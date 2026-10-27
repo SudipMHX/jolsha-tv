@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jolsha</string>
+    <string name="app_tagline">Fast &amp; Crisp Android TV IPTV Player</string>
+
+    <!-- Categories -->
+    <string name="category_all">All Channels</string>
+    <string name="category_favorites">Favorites</string>
+    <string name="category_recent">Recently Watched</string>
+    <string name="category_bangla">Bangla</string>
+    <string name="category_news">News</string>
+    <string name="category_sports">Sports</string>
+    <string name="category_movies">Movies</string>
+    <string name="category_entertainment">Entertainment</string>
+    <string name="category_documentary">Documentary</string>
+    <string name="category_kids">Kids</string>
+    <string name="category_music">Music</string>
+
+    <!-- Actions & Headers -->
+    <string name="action_search">Search</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_close">Close</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_next_channel">Next Channel</string>
+    <string name="action_quick_guide">Channel Guide [UP/DOWN]</string>
+    <string name="action_audio_tracks">Audio Tracks</string>
+    <string name="action_aspect_ratio">Aspect: %1$s</string>
+    <string name="action_reload">Reload</string>
+
+    <!-- Search -->
+    <string name="search_hint">Search channel name or number…</string>
+    <string name="no_search_results">No channels matching \"%1$s\"</string>
+
+    <!-- Empty States -->
+    <string name="empty_playlist_title">No Channels Found</string>
+    <string name="empty_playlist_desc">Load the sample playlist or import your own M3U playlist file.</string>
+    <string name="empty_favorites_title">No Favorites Yet</string>
+    <string name="empty_favorites_desc">Press and hold OK on any channel to add it to your Favorites.</string>
+    <string name="empty_recent_title">No Watch History</string>
+    <string name="empty_recent_desc">Channels you watch will appear here for quick access.</string>
+
+    <!-- Settings Dialog -->
+    <string name="settings_title">Settings &amp; Playlist</string>
+    <string name="settings_import_m3u">Import M3U from Storage</string>
+    <string name="settings_import_m3u_desc">Choose a local .m3u or .m3u8 playlist file</string>
+    <string name="settings_reload_playlist">Reload Current Playlist</string>
+    <string name="settings_reload_playlist_desc">Re-parse and refresh all channel streams</string>
+    <string name="settings_load_sample">Load Default Sample Playlist</string>
+    <string name="settings_load_sample_desc">Includes Bangladesh national, news and entertainment channels</string>
+    <string name="settings_default_aspect">Default Aspect Ratio</string>
+    <string name="settings_default_aspect_desc">Cycle between Fit, Fill, Zoom, 16:9, 4:3</string>
+    <string name="settings_clear_history">Clear Watch History</string>
+    <string name="settings_clear_history_desc">Remove all channels from Recently Watched</string>
+    <string name="settings_reset_favorites">Reset Favorites</string>
+    <string name="settings_reset_favorites_desc">Clear all starred favorite channels</string>
+    <string name="settings_about">About Jolsha</string>
+    <string name="settings_about_desc">Version 1.0.0 • Clean, native Android TV player</string>
+
+    <!-- Player Messages -->
+    <string name="playback_buffering">Connecting to stream…</string>
+    <string name="playback_error_title">Playback Error</string>
+    <string name="playback_error_desc">Unable to load stream. Please check network or try another channel.</string>
+    <string name="badge_live">LIVE</string>
+    <string name="badge_hd">HD</string>
+    <string name="badge_fhd">FHD</string>
+
+    <!-- Audio Track Dialog -->
+    <string name="dialog_audio_tracks_title">Select Audio Track</string>
+    <string name="track_default">Default Audio Track</string>
+    <string name="track_unknown">Audio Track</string>
+
+    <!-- Toast / Notification -->
+    <string name="favorite_added">Added to Favorites</string>
+    <string name="favorite_removed">Removed from Favorites</string>
+    <string name="history_cleared">Watch history cleared</string>
+    <string name="favorites_cleared">Favorites cleared</string>
+</resources>

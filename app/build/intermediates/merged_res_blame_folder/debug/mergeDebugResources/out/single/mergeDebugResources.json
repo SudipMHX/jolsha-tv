@@ -1,0 +1,178 @@
+[
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_aspect_ratio.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_aspect_ratio.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_check.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_check.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_search.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_search.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_info.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_info.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_action_button.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_action_button.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_hud_bottom.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_hud_bottom.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_favorite_border.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_favorite_border.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_audio_track.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_audio_track.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_history.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_history.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_channel_card.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_channel_card.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_dialog_item.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_dialog_item.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_logo_jolsha.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_logo_jolsha.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/layout_activity_main.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/layout_dialog_audio_tracks.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/layout/dialog_audio_tracks.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/layout_item_quick_channel.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/layout/item_quick_channel.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/layout_activity_player.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/layout/activity_player.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/layout_dialog_settings.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/layout/dialog_settings.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/color_color_action_button_text.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/color/color_action_button_text.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_quick_channel_item.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_quick_channel_item.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_badge_live.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_badge_live.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_play_arrow.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_play_arrow.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/color_color_category_tab_text.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/color/color_category_tab_text.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_badge_resolution.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_badge_resolution.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/xml_network_security_config.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/xml/network_security_config.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/layout_item_category_tab.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/layout/item_category_tab.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_dialog_card.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_dialog_card.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_error_outline.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_error_outline.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_tv.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_tv.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_favorite.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_favorite.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_hud_top.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_hud_top.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_close.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_close.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_side_drawer.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_side_drawer.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_folder_open.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_folder_open.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_launcher_tv.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_launcher_tv.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_category_count.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_category_count.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_settings.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_settings.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_channel_logo_placeholder.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_channel_logo_placeholder.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/layout_item_channel_card.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/layout/item_channel_card.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_refresh.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_refresh.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_ic_live.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/ic_live.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_banner_jolsha.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/banner_jolsha.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/layout_item_dialog_audio_track.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/layout/item_dialog_audio_track.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/drawable_bg_category_tab.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/drawable/bg_category_tab.xml"
+    },
+    {
+        "merged": "com.jolsha.tv.app-debug-36:/color_color_action_button_icon.xml.flat",
+        "source": "com.jolsha.tv.app-main-38:/color/color_action_button_icon.xml"
+    }
+]
