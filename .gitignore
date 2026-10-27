@@ -1,12 +1,89 @@
-*.iml
-.gradle/
-local.properties
-.idea/
-.DS_Store
-build/
-app/build/
-captures/
-.externalNativeBuild/
-.cxx/
+# =========================================================================
+# Android & Gradle Build Artifacts
+# =========================================================================
 *.apk
+*.ap_
+*.aab
+*.dex
+*.class
+bin/
+gen/
+out/
+build/
+*/build/
+app/build/
+.gradle/
 
+# =========================================================================
+# Local SDK & Machine Configuration
+# =========================================================================
+local.properties
+.env
+.env.*
+
+# =========================================================================
+# Android Studio & IntelliJ IDEA
+# =========================================================================
+*.iml
+*.ipr
+*.iws
+.idea/
+.shelf/
+
+# =========================================================================
+# Visual Studio Code & Other Editors
+# =========================================================================
+.vscode/
+*.code-workspace
+
+# =========================================================================
+# Android Native / C++ Build Artifacts
+# =========================================================================
+.cxx/
+.externalNativeBuild/
+cmake-build-*/
+
+# =========================================================================
+# Android Profiling, Memory Dumps & Diagnostics
+# =========================================================================
+captures/
+*.hprof
+
+# =========================================================================
+# Log Files
+# =========================================================================
+*.log
+hs_err_pid*
+replay_pid*
+
+# =========================================================================
+# Operating System Generated Files
+# =========================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# =========================================================================
+# Signing & Keystores (Preserve Project Release Keystore)
+# =========================================================================
+*.keystore
+*.key
+*.p12
+*.pem
+!keystore/release.jks
+!keystore.properties
